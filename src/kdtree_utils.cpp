@@ -30,7 +30,13 @@ node <fd>::node(std::vector <fd> &data, bool level)
 
 template <class fd>
 node <fd>::~node() {}
-
+/*
+template <class fd>
+node <fd>::node(const node <fd> &old)
+{
+    std::cout<<"Copy constructor called"<<std::endl;
+}
+*/
 template <class fd>
 void node <fd>::check_point()
 {
@@ -45,9 +51,10 @@ void node <fd>::check_point()
             std::cout<<data_point[dim]<<" ";
         }
         std::cout<<std::endl;
+        if (this->left == nullptr) std::cout<<"Left is nullptr"<<std::endl;
+        if (this->right == nullptr) std::cout<<"Right is nullptr"<<std::endl;
     }
 }
-
 
 template <class fd>
 kdtree <fd>::kdtree()
@@ -64,10 +71,10 @@ kdtree <fd>::~kdtree()
     std::cout<<"Tree destroyed."<<std::endl;
 }
 
-/**
-* Else case is a Leaf node with nullptr and were allocated in stack
-* (left, right, root & head(main.cpp)). Deletes automatically when out of scope.
-*/
+
+// Else case is a Leaf node with nullptr and were allocated in stack
+// (left, right, root & head(main.cpp)). Deletes automatically when out of scope.
+
 
 template <class fd>
 void kdtree <fd>::kill_tree(node <fd> *subtree)
@@ -147,50 +154,71 @@ double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2)
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::search_kdtree(std::vector <fd> &data)
+bool kdtree <fd>::check_kdtree(std::vector <fd> &data)
 {
     if (root == nullptr)
     {
-        std::cout<<"No elements in tree. Empty tree!"<<std::endl;
         return root;
     }
     else
     {
-        node <double> *nearest = nullptr;
-        return search_kdtree(data, root, nearest);
+        return check_kdtree(data, root);
     }
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *subtree, node <fd> *nearest, double best_dist, size_t depth)
+bool kdtree <fd>::check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth)
 {
     if (subtree == nullptr)
+    {
+        return false;
+    }
+
+    if (distance(data, subtree->data_point) == 0) return true;
+
+    fd axis = fmod(depth, data.size());
+    if (data[axis] < subtree->data_point[axis])
+    {
+        return check_kdtree(data, subtree->left, depth+1);
+    }
+    return check_kdtree(data, subtree->right, depth+1);
+}
+
+template <class fd>
+node <fd> *kdtree <fd>::search_kdtree(std::vector <fd> &data)
+{
+    if (root == nullptr)
+    {
+        return root;
+    }
+    else
+    {
+        return search_kdtree(data, root);
+    }
+}
+
+template <class fd>
+node <fd> *kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth, double best_dist)
+{
+    if (subtree->left == nullptr && subtree->right == nullptr)
     {
         return subtree;
     }
 
     double temp_dist = distance(data, subtree->data_point);
-    std::cout<<"Temporary Distance: "<<temp_dist<<", Best Distance: "<<best_dist<<" for "<<subtree->data_point[0]<<" and "<<data[0]<<" with "<<(temp_dist < best_dist)<<std::endl;
-    if (temp_dist < best_dist)
-    {
-        nearest = subtree;  //Copy constructor and assignment operator should solve the problem. Else, we can see it after that implementation.
-        best_dist = temp_dist;
-    }
-    std::cout<<nearest->data_point[0]<<" with a distance of "<<best_dist<<std::endl;
+    if ( temp_dist < best_dist) best_dist = temp_dist;
 
     fd axis = fmod(depth, data.size());
     if (data[axis] < subtree->data_point[axis])
     {
-        subtree->left = search_kdtree(data, subtree->left, nearest, best_dist, depth+1);
+        return search_kdtree(data, subtree->left, depth+1, best_dist);
     }
     else
     {
-        subtree->right = search_kdtree(data, subtree->right, nearest, best_dist, depth+1);
+        return search_kdtree(data, subtree->right, depth+1, best_dist);
     }
-    nearest->check_point();
-    std::cout<<best_dist<<std::endl;
-    return subtree;
 }
+
 
 template <class fd>
 void kdtree <fd>::print_tree(node <fd> *subtree)

@@ -19,22 +19,24 @@
 #include <iostream>
 #include <stdexcept>
 #include <limits>
+#include <memory>
 
 template <class fd> class kdtree;
 
 template <class fd>
 class node
 {
-    private:
+    public:
+//    private:
         std::vector <fd> data_point;
         node* left;
         node* right;
         bool collision;
 
-    public:
-
+//    public:
         node(std::vector <fd> &data, bool level=0);
         ~node();
+        //node(const node <fd> &old);
         void check_point();
     friend class kdtree <fd>;
 };
@@ -54,8 +56,11 @@ class kdtree
         node <fd> *insert_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0, bool collsion_level=0);
 
         double distance(std::vector <fd> &data1, std::vector <fd> &data2);
+        bool check_kdtree(std::vector <fd> &data);
+        bool check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0);
+
         node <fd> *search_kdtree(std::vector <fd> &data);
-        node <fd> *search_kdtree(std::vector <fd> &data, node <fd> *subtree, node <fd> *nearest, double best_dist=std::numeric_limits<double>::max(), size_t depth=0);
+        node <fd> *search_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
 
         void print_tree(node <fd> *subtree);
 };
