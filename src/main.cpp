@@ -46,46 +46,35 @@ int main()
     node <double> *root;
     node <double> *nn;
 
-    data = {6};
+    data = {50,0};
     root = grow_kdtree(&tree, data);
 
-    data = {5};
+    data = {25,1};
     grow_kdtree(&tree, data);
 
-    data = {8};
+    data = {75,1};
     grow_kdtree(&tree, data);
 
-    data = {7};
+    data = {60,2};
     grow_kdtree(&tree, data);
 
-    data = {9};
+    data = {100,5};
     grow_kdtree(&tree, data);
 
-    data = {3};
+    data = {10,6};
     grow_kdtree(&tree, data);
 
-    data = {2};
-    grow_kdtree(&tree, data);
-
-    data = {4};
+    data = {49,3};
     grow_kdtree(&tree, data);
 
     std::cout<<std::endl<<"Printing Tree..."<<std::endl;
     tree.print_tree(root);
 
-//    data = {50};
-//    node <double> *test1 = new node <double> (data);
-//    test1->check_point();
-//    std::shared_ptr <node <double> > test2(test1);
-//    test1->data_point = {75};
-//    test2->check_point();
-//    test1->check_point();
-
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {3.4};
-    nn = tree.search_kdtree(data);
-    std::cout<<std::endl<<"Nearest Neigbor: ";//<<hn<<std::endl;
-    nn->check_point();
+    data = {51,5};
+    std::vector <double> dat = tree.search_kdtree(data);
+    std::cout<<std::endl<<"Nearest Neigbor: "<<dat[0]<<" "<<dat[1]<<std::endl;
+//    nn->check_point();
 
     return 0;
 }

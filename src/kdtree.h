@@ -59,8 +59,8 @@ class kdtree
         bool check_kdtree(std::vector <fd> &data);
         bool check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0);
 
-        node <fd> *search_kdtree(std::vector <fd> &data);
-        node <fd> *search_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
+        std::vector <fd> search_kdtree(std::vector <fd> &data);
+        std::vector <fd> search_kdtree(std::vector <fd> &data, node <fd> *subtree, std::vector <fd> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
 
         void print_tree(node <fd> *subtree);
 };

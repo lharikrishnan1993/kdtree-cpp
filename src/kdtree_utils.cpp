@@ -14,6 +14,7 @@
 */
 
 #include "kdtree.h"
+bool search_left = true;
 
 template <class fd>
 node <fd>::node(std::vector <fd> &data, bool level)
@@ -185,49 +186,72 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::search_kdtree(std::vector <fd> &data)
+std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data)
 {
     if (root == nullptr)
     {
-        return root;
+        return root->data_point;
     }
     else
     {
-        return search_kdtree(data, root);
+        return search_kdtree(data, root, root->data_point);
     }
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth, double best_dist)
+std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *subtree, std::vector <fd> nearest, size_t depth, double best_dist)
 {
-    if (subtree->left == nullptr && subtree->right == nullptr)
+    if (subtree == nullptr)
     {
-        return subtree;
+        return nearest;
     }
 
     double temp_dist = distance(data, subtree->data_point);
-    if ( temp_dist < best_dist) best_dist = temp_dist;
+    if (temp_dist < best_dist)
+    {
+        nearest = subtree->data_point;
+        best_dist = temp_dist;
+        std::cout<<best_dist<<std::endl;
+        std::cout<<nearest[0]<<" "<<nearest[1]<<std::endl;
+    }
 
     fd axis = fmod(depth, data.size());
+
     if (data[axis] < subtree->data_point[axis])
     {
-        return search_kdtree(data, subtree->left, depth+1, best_dist);
+        std::cout<<"Left"<<std::endl;
+        search_left = true;
+        nearest = search_kdtree(data, subtree->left, nearest, depth+1, best_dist);
     }
     else
     {
-        return search_kdtree(data, subtree->right, depth+1, best_dist);
+        std::cout<<"Right"<<std::endl;
+        search_left = false;
+        nearest = search_kdtree(data, subtree->right, nearest, depth+1, best_dist);
     }
+
+    std::cout<<"Coming: "<<search_left<<std::endl;
+    if (abs(data[axis] - subtree->data_point[axis]) < best_dist)
+    {
+        if (search_left)
+        {
+            std::cout<<"Right: "<<nearest[0]<<" "<<nearest[1]<<std::endl;
+            nearest = search_kdtree(data, subtree->right, nearest, depth+1, best_dist);
+        }
+        else
+        {
+            std::cout<<"Left: "<<nearest[0]<<" "<<nearest[1]<<std::endl;
+            nearest = search_kdtree(data, subtree->left, nearest, depth+1, best_dist);
+        }
+    }
+    return nearest;
 }
 
 
 template <class fd>
 void kdtree <fd>::print_tree(node <fd> *subtree)
 {
-    if (subtree == nullptr)
-    {
-        std::cout<<"None"<<std::endl;
-    }
-    else
+    if (subtree != nullptr)
     {
         subtree->check_point();
         print_tree(subtree->left);
