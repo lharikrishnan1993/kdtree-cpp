@@ -26,14 +26,13 @@ template <class fd> class kdtree;
 template <class fd>
 class node
 {
-    public:
-//    private:
+    private:
         std::vector <fd> data_point;
         node* left;
         node* right;
         bool collision;
 
-//    public:
+    public:
         node(std::vector <fd> &data, bool level=0);
         ~node();
         //node(const node <fd> &old);
