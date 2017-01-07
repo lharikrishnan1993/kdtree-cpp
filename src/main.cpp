@@ -1,7 +1,7 @@
 /**
 *    @author Harikrishnan Lakshmanan
 *    @file main.cpp
-*    @date 01/04/2017
+*    @date 01/06/2017
 *
 *    @brief Uber Coding Assignment, Kd Tree Implementation in C++.
 *
@@ -39,39 +39,31 @@ node <double> *grow_kdtree(kdtree <double> *tree, std::vector <double> &data)
     return head;
 }
 
+node <double> *build_tree(kdtree <double> &tree, std::vector <std::vector<double>> &dataset)
+{
+    node <double> *root;
+    for (int i = 0; i < dataset.size(); i++ )
+    {
+        root = grow_kdtree(&tree, dataset[i]);
+    }
+    return root;
+}
+
 int main()
 {
-    std::vector <double> data;
+    std::vector <std::vector <double>> dataset;
     kdtree <double> tree;
-    node <double> *root;
     node <double> *nn;
+    node <double> *root;
 
-    data = {50,0};
-    root = grow_kdtree(&tree, data);
-
-    data = {25,1};
-    grow_kdtree(&tree, data);
-
-    data = {75,1};
-    grow_kdtree(&tree, data);
-
-    data = {60,2};
-    grow_kdtree(&tree, data);
-
-    data = {100,5};
-    grow_kdtree(&tree, data);
-
-    data = {10,6};
-    grow_kdtree(&tree, data);
-
-    data = {49,3};
-    grow_kdtree(&tree, data);
+    dataset = {{50,0}, {25,1}, {75,1}, {60,2}, {100,5}, {10,6}, {49,3}};
+    root = build_tree(tree, dataset);
 
     std::cout<<std::endl<<"Printing Tree..."<<std::endl;
     tree.print_tree(root);
 
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {51,5};
+    std::vector <double> data = {51,5};
     std::vector <double> dat = tree.search_kdtree(data);
     std::cout<<std::endl<<"Nearest Neigbor: "<<dat[0]<<" "<<dat[1]<<std::endl;
 //    nn->check_point();

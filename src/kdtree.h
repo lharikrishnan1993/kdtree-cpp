@@ -1,7 +1,7 @@
 /**
 *    @author Harikrishnan Lakshmanan
 *    @file kdtree.h
-*    @date 01/04/2017
+*    @date 01/06/2017
 *
 *    @brief Uber Coding Assignment, Kd Tree Implementation in C++.
 *
@@ -36,17 +36,18 @@ class node
         node(std::vector <fd> &data, bool level=0);
         ~node();
         //node(const node <fd> &old);
-        void check_point();
+        void check_point() const;
     friend class kdtree <fd>;
 };
 
 template <class fd>
 class kdtree
 {
-    private:
+    public:
+    //private:
         node <fd> *root;
 
-    public:
+    //public:
         kdtree();
         ~kdtree();
         void kill_tree(node <fd> *subtree);
