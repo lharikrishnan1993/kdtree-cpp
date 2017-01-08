@@ -94,7 +94,7 @@ node <double> *build_tree(kdtree <double> &tree, std::vector<std::vector<double>
 {
     static node <double> *root = nullptr;
 
-    if (dataset->size() == 0) return root
+    if (dataset->size() == 0) return root;
 
     median_data *details = new median_data;
     get_median(details, dataset);
@@ -112,17 +112,34 @@ int main()
     kdtree <double> tree;
     node <double> *nn;
     node <double> *root;
+    std::vector <float> data1;
     std::vector <double> data;
 
-    whole_data = {{50,0}, {25,1}, {75,1}, {60,2}, {100,5}, {10,6}, {49,3}};
+    whole_data = {{50,0}, {25,1}, {75,2}, {60,3}, {100,4}, {10,5}, {49,6}};
 
     root = build_tree(tree, &whole_data);
 
     std::cout<<std::endl<<"Printing Tree..."<<std::endl;
     tree.print_tree(root);
 
+    FILE *fp = fopen("tree.txt", "wb+");
+    if (fp == NULL)
+    {
+        puts("Could not open file");
+        return 0;
+    }
+    else tree.serialize_tree(root, fp);
+    fclose(fp);
+
+    FILE *load = fopen("tree.txt", "r");
+    kdtree <double> tree2;
+    root = tree2.deserialize_tree(nn, load);
+
+    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
+    tree2.print_tree(root);
+
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {51,5};
+    data = {48,7};
     std::vector <double> dat = tree.search_kdtree(data);
     std::cout<<std::endl<<"Nearest Neigbor: "<<dat[0]<<" "<<dat[1]<<std::endl;
 //    nn->check_point();

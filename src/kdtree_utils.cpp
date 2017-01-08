@@ -219,9 +219,63 @@ std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *s
     return nearest;
 }
 
+template <class fd>
+node <fd> *kdtree <fd>::serialize_tree(node <fd> *subtree, FILE *fp)
+{
+    if (subtree == nullptr)
+    {
+        fprintf(fp, "%lf", this->LEAF);
+        return subtree;
+    }
+
+    for (int i=0; i < subtree->data_point.size(); i++)
+    {
+        fprintf(fp, "%lf", (subtree->data_point)[i]);
+    }
+    fprintf(fp, "%lf", this->DATA);
+
+    serialize_tree(subtree->left, fp);
+    serialize_tree(subtree->right, fp);
+}
 
 template <class fd>
-void kdtree <fd>::print_tree(node <fd> *subtree)
+node <fd> *kdtree <fd>::deserialize_tree(node <fd> *subtree, FILE *fp)
+{
+    static std::vector<fd> data;
+    static fd one_dim_data;
+    static node <double> *head = nullptr;
+    static size_t root_locater = 0;
+    data.clear();
+    fscanf(fp, "%lf", &one_dim_data);
+//    std::cout<<one_dim_data<<std::endl;
+
+    if (one_dim_data == this->LEAF)
+    {
+        return subtree;
+    }
+
+    while (one_dim_data != this->DATA)
+    {
+        std::cout<<one_dim_data<<std::endl;
+        data.push_back(one_dim_data);
+        fscanf(fp, "%lf", &one_dim_data);
+    }
+//    std::cout<<data[0]<<", "<<data[1]<<std::endl;
+    if (!root_locater)
+    {
+        subtree = this->insert_kdtree(data);
+//        head = this->insert_kdtree(data);
+    }
+    else subtree = this->insert_kdtree(data);
+
+    root_locater += 1;
+    subtree->left = deserialize_tree(subtree->left, fp);
+    subtree->right = deserialize_tree(subtree->right, fp);
+//    return head;
+}
+
+template <class fd>
+void kdtree <fd>::print_tree(node <fd> *subtree) const
 {
     if (subtree != nullptr)
     {

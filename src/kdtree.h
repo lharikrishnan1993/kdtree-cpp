@@ -20,6 +20,7 @@
 #include <stdexcept>
 #include <limits>
 #include <memory>
+#include <stdio.h>
 
 template <class fd> class kdtree;
 
@@ -43,11 +44,13 @@ class node
 template <class fd>
 class kdtree
 {
-    public:
-    //private:
+    private:
         node <fd> *root;
+        const fd LEAF = -std::numeric_limits<fd>::infinity();
+        const fd DATA = std::numeric_limits<fd>::infinity();
+        //const fd SINGLE_DATA = -std::numeric_limits<fd>::infinity();
 
-    //public:
+    public:
         kdtree();
         ~kdtree();
         void kill_tree(node <fd> *subtree);
@@ -62,7 +65,10 @@ class kdtree
         std::vector <fd> search_kdtree(std::vector <fd> &data);
         std::vector <fd> search_kdtree(std::vector <fd> &data, node <fd> *subtree, std::vector <fd> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
 
-        void print_tree(node <fd> *subtree);
+        node <fd> *serialize_tree(node <fd> *subtree, FILE *fp);
+        node <fd> *deserialize_tree(node <fd> *subtree, FILE *fp);
+
+        void print_tree(node <fd> *subtree) const;
 };
 
 #endif
