@@ -94,7 +94,7 @@ node <double> *build_tree(kdtree <double> &tree, std::vector<std::vector<double>
 {
     static node <double> *root = nullptr;
 
-    if (dataset->size() == 0) return root
+    if (dataset->size() == 0) return root;
 
     median_data *details = new median_data;
     get_median(details, dataset);
