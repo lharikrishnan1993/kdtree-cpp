@@ -59,10 +59,10 @@ void parser(std::vector<std::vector<fd>> *whole_data, std::ifstream *file)
     std::cout<<"Parsed"<<std::endl;
 }
 
-node <double> *grow_kdtree(kdtree <double> *tree, std::vector <double> &data)
+std::shared_ptr <node <double> > grow_kdtree(kdtree <double> *tree, std::vector <double> &data)
 {
-    static node <double> *head = nullptr;
-    static size_t root_locater = 0;
+    std::shared_ptr <node <double>> head;
+    static bool root_locater = 0;
     if (!root_locater)
     {
         head = tree->insert_kdtree(data);
@@ -134,9 +134,9 @@ void get_median(median_data *median_details, std::vector<std::vector<double>> *d
     }
 }
 
-node <double> *build_tree(kdtree <double> &tree, std::vector<std::vector<double>> *dataset)
+std::shared_ptr <node <double> > build_tree(kdtree <double> &tree, std::vector<std::vector<double>> *dataset)
 {
-    static node <double> *root = nullptr;
+    std::shared_ptr <node <double>> root;
 
     if (dataset->size() == 0) return root;
 
@@ -145,8 +145,6 @@ node <double> *build_tree(kdtree <double> &tree, std::vector<std::vector<double>
     root = grow_kdtree(&tree, details->data);
     build_tree(tree, &details->data_left);
     build_tree(tree, &details->data_right);
-
-    return root;
 }
 
 int main()
@@ -154,11 +152,11 @@ int main()
     std::vector<std::vector<double>> whole_data;
     kdtree <double> tree;
     node <double> *nn;
-    node <double> *root;
+    std::shared_ptr <node <double>> root;
     std::vector <double> data;
 
     std::ifstream file;
-    file.open("sample_data.csv");
+    file.open("sample.csv");
     parser <double> (&whole_data, &file);
     file.close();
 
@@ -167,8 +165,8 @@ int main()
 
     root = build_tree(tree, &whole_data);
 
-    //std::cout<<std::endl<<"Printing Tree..."<<std::endl;
-    //tree.print_tree(root);
+    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
+    tree.print_tree(root);
 
     std::ofstream fp;
     fp.open("tree.kd");
@@ -186,7 +184,7 @@ int main()
     fp.close();
 
     kdtree <double> tree2;
-    node <double> *root2;
+    std::shared_ptr <node <double>> root2;
 
     std::ifstream fil;
     fil.open("tree.kd");
@@ -208,6 +206,8 @@ int main()
         std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
     }
 //    nn->check_point();
+
+
 
     double wall1 = get_wall_time();
     double cpu1  = get_cpu_time();

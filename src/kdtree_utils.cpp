@@ -7,9 +7,9 @@
 *
 *    @section Updates to make
 *       1) Provide facility to change the axis split and position split in run time.
-*       2) Serialization and Deserialization
 *
 *    @section Optimization Issues
+*       1) Add smart pointers
 */
 
 #include "kdtree.h"
@@ -22,14 +22,13 @@ node <fd>::node(std::vector <fd> &data, bool level)
     else
     {
         data_point = data;
-        left = nullptr;
-        right = nullptr;
         collision = level;
     }
 }
 
 template <class fd>
 node <fd>::~node() {}
+
 /*
 template <class fd>
 node <fd>::node(const node <fd> &old)
@@ -59,14 +58,14 @@ void node <fd>::check_point() const
 template <class fd>
 kdtree <fd>::kdtree()
 {
-    root = nullptr;
+//    root = nullptr;
 //    std::cout<<"Building tree..."<<std::endl;
 }
 
 template <class fd>
 kdtree <fd>::~kdtree()
 {
-    kill_tree(root);
+//    kill_tree(root);
     std::cout<<std::endl;
     std::cout<<"Tree destroyed."<<std::endl;
 }
@@ -88,11 +87,11 @@ void kdtree <fd>::kill_tree(node <fd> *subtree)
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::insert_kdtree(std::vector <fd> &data)
+std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data)
 {
-    if (root == nullptr)
+    if (root.get() == nullptr)
     {
-        root = new node <fd> (data);
+        this->root = std::make_shared<node <fd>> (data);
         return root;
     }
     else
@@ -102,14 +101,13 @@ node <fd> *kdtree <fd>::insert_kdtree(std::vector <fd> &data)
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::insert_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth, bool collision)
+std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth, bool collision)
 {
-    if (subtree == nullptr)
+    if (subtree.get() == nullptr)
     {
-        subtree = new node <fd> (data, collision);
+        std::shared_ptr<node <fd>> subtree = std::make_shared<node <fd>> (data, collision);
         return subtree;
     }
-
     fd axis = fmod(depth, data.size());
     if (data[axis] < subtree->data_point[axis])
     {
@@ -152,7 +150,7 @@ double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2)
         return sum;
     }
 }
-
+/*
 template <class fd>
 bool kdtree <fd>::check_kdtree(std::vector <fd> &data)
 {
@@ -174,21 +172,18 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_
     }
     return check_kdtree(data, subtree->right, depth+1);
 }
-
+*/
 template <class fd>
 std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data)
 {
-    if (root == nullptr) return root->data_point;
+    if (root.get() == nullptr) return root->data_point;
     else return search_kdtree(data, root, root->data_point);
 }
 
 template <class fd>
-std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *subtree, std::vector <fd> nearest, size_t depth, double best_dist)
+std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::vector <fd> nearest, size_t depth, double best_dist)
 {
-    if (subtree == nullptr)
-    {
-        return nearest;
-    }
+    if (subtree.get() == nullptr) return nearest;
 
     double temp_dist = distance(data, subtree->data_point);
     if (temp_dist < best_dist)
@@ -219,35 +214,35 @@ std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *s
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::serialize_tree(node <fd> *subtree, std::ofstream *file)
+std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <fd>> subtree, std::ofstream *file)
 {
-    if (subtree == nullptr)
+    if (subtree.get() == nullptr)
     {
         return subtree;
     }
 
     typename std::vector<fd>::iterator it;
-    for ( it=subtree->data_point.begin(); it != subtree->data_point.end();)
+    for (it=subtree->data_point.begin(); it != subtree->data_point.end();)
     {
         *file << *it;
         it++;
         if (it != subtree->data_point.end()) *file << ',';
     }
     *file << "\n";
-
     serialize_tree(subtree->left, file);
     serialize_tree(subtree->right, file);
+    return subtree;
 }
 
 template <class fd>
-node <fd> *kdtree <fd>::deserialize_tree(node <fd> *subtree, std::ifstream *file)
+std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::shared_ptr <node <fd>> subtree, std::ifstream *file)
 {
     std::vector<fd> data;
     std::string value, word, whole_data;
     data.clear();
     fd num;
     bool root_locater = 0;
-    node <double> *head = nullptr;
+    std::shared_ptr <node <fd>> head;
 
     while (file->good())
     {
@@ -272,9 +267,9 @@ node <fd> *kdtree <fd>::deserialize_tree(node <fd> *subtree, std::ifstream *file
 }
 
 template <class fd>
-void kdtree <fd>::print_tree(node <fd> *subtree)
+void kdtree <fd>::print_tree(std::shared_ptr <node <fd>> subtree)
 {
-    if (subtree != nullptr)
+    if (subtree.get() != nullptr)
     {
         subtree->check_point();
         print_tree(subtree->left);

@@ -31,11 +31,12 @@ class node
 {
     private:
         std::vector <fd> data_point;
-        node* left;
-        node* right;
+        std::shared_ptr <node <fd>> left;
+        std::shared_ptr <node <fd>> right;
         bool collision;
 
     public:
+        node();
         node(std::vector <fd> &data, bool level=0);
         ~node();
         //node(const node <fd> &old);
@@ -47,27 +48,28 @@ template <class fd>
 class kdtree
 {
     private:
-        node <fd> *root;
+        std::shared_ptr <node <fd>> root;
 
     public:
         kdtree();
         ~kdtree();
         void kill_tree(node <fd> *subtree);
 
-        node <fd> *insert_kdtree(std::vector <fd> &data);
-        node <fd> *insert_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0, bool collsion_level=0);
+        std::shared_ptr <node <fd> > insert_kdtree(std::vector <fd> &data);
+        std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0, bool collsion_level=0);
 
         double distance(std::vector <fd> &data1, std::vector <fd> &data2);
+/*
         bool check_kdtree(std::vector <fd> &data);
         bool check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0);
-
+*/
         std::vector <fd> search_kdtree(std::vector <fd> &data);
-        std::vector <fd> search_kdtree(std::vector <fd> &data, node <fd> *subtree, std::vector <fd> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
+        std::vector <fd> search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::vector <fd> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
 
-        node <fd> *serialize_tree(node <fd> *subtree, std::ofstream *file);
-        node <fd> *deserialize_tree(node <fd> *subtree, std::ifstream *file);
+        std::shared_ptr <node <fd>> serialize_tree(std::shared_ptr <node <fd>> subtree, std::ofstream *file);
+        std::shared_ptr <node <fd>> deserialize_tree(std::shared_ptr <node <fd>> subtree, std::ifstream *file);
 
-        void print_tree(node <fd> *subtree);
+        void print_tree(std::shared_ptr <node <fd>> subtree);
 };
 
 #endif
