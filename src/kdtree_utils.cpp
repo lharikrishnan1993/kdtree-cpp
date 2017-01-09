@@ -6,9 +6,8 @@
 *    @brief Uber Coding Assignment, Kd Tree Implementation in C++.
 *
 *    @section Updates to make
-*       1) Add dimensionality check and exception in the node depending on the root dimensions.
-*       2) Add insertion strategy by changing split axis and split position
-*       3) Provide facility to change the axis split and position split in run time.
+*       1) Provide facility to change the axis split and position split in run time.
+*       2) Serialization and Deserialization
 *
 *    @section Optimization Issues
 */
@@ -61,7 +60,7 @@ template <class fd>
 kdtree <fd>::kdtree()
 {
     root = nullptr;
-    std::cout<<"Building tree..."<<std::endl;
+//    std::cout<<"Building tree..."<<std::endl;
 }
 
 template <class fd>
@@ -219,6 +218,58 @@ std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data, node <fd> *s
     return nearest;
 }
 
+template <class fd>
+node <fd> *kdtree <fd>::serialize_tree(node <fd> *subtree, std::ofstream *file)
+{
+    if (subtree == nullptr)
+    {
+        return subtree;
+    }
+
+    typename std::vector<fd>::iterator it;
+    for ( it=subtree->data_point.begin(); it != subtree->data_point.end();)
+    {
+        *file << *it;
+        it++;
+        if (it != subtree->data_point.end()) *file << ',';
+    }
+    *file << "\n";
+
+    serialize_tree(subtree->left, file);
+    serialize_tree(subtree->right, file);
+}
+
+template <class fd>
+node <fd> *kdtree <fd>::deserialize_tree(node <fd> *subtree, std::ifstream *file)
+{
+    std::vector<fd> data;
+    std::string value, word, whole_data;
+    data.clear();
+    fd num;
+    bool root_locater = 0;
+    node <double> *head = nullptr;
+
+    while (file->good())
+    {
+        getline(*file, whole_data, '/');
+        std::stringstream dataset(whole_data);
+        while (getline(dataset, value, '\n'))
+        {
+            data.clear();
+            std::stringstream stream(value);
+            while(getline(stream, word, ','))
+            {
+                std::stringstream ss;
+                ss << word;
+                ss >> num;
+                data.push_back(num);
+            }
+            if (!root_locater) head = this->insert_kdtree(data);
+            else this->insert_kdtree(data);
+        }
+    }
+    return head;
+}
 
 template <class fd>
 void kdtree <fd>::print_tree(node <fd> *subtree)

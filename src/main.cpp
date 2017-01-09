@@ -14,9 +14,20 @@
 #include "kdtree_utils.cpp"
 #include <algorithm>
 #include <map>
-#include <string>
-#include <fstream>
-#include <sstream>
+#include <time.h>
+#include <sys/time.h>
+
+double get_wall_time(){
+    struct timeval time;
+    if (gettimeofday(&time,NULL)){
+        //  Handle error
+        return 0;
+    }
+    return (double)time.tv_sec + (double)time.tv_usec * .000001;
+}
+double get_cpu_time(){
+    return (double)clock() / CLOCKS_PER_SEC;
+}
 
 template <typename fd>
 void parser(std::vector<std::vector<fd>> *whole_data, std::ifstream *file)
@@ -147,19 +158,49 @@ int main()
     std::vector <double> data;
 
     std::ifstream file;
-    file.open("sample.csv");
+    file.open("sample_data.csv");
     parser <double> (&whole_data, &file);
+    file.close();
+
+    double wall0 = get_wall_time();
+    double cpu0  = get_cpu_time();
 
     root = build_tree(tree, &whole_data);
 
-    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
-    tree.print_tree(root);
+    //std::cout<<std::endl<<"Printing Tree..."<<std::endl;
+    //tree.print_tree(root);
+
+    std::ofstream fp;
+    fp.open("tree.kd");
+    if (fp.bad())
+    {
+        puts("Could not open file");
+        return 0;
+    }
+    else
+    {
+        std::cout<<"Stroring the tree to disk"<<std::endl;
+        tree.serialize_tree(root, &fp);
+    }
+    fp << '/';
+    fp.close();
+
+    kdtree <double> tree2;
+    node <double> *root2;
+
+    std::ifstream fil;
+    fil.open("tree.kd");
+    if (fil.good())
+    {
+        std::cout<<"Loading the tree from disk"<<std::endl;
+        root2 = tree2.deserialize_tree(root2, &fil);
+    }
 
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {51,5,3};
+    data = {51,5,25};
     try
     {
-        std::vector <double> dat = tree.search_kdtree(data);
+        std::vector <double> dat = tree2.search_kdtree(data);
         std::cout<<std::endl<<"Nearest Neigbor: "<<dat[0]<<" "<<dat[1]<<" "<<dat[2]<<std::endl;
     }
     catch (const std::invalid_argument& e )
@@ -167,6 +208,12 @@ int main()
         std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
     }
 //    nn->check_point();
+
+    double wall1 = get_wall_time();
+    double cpu1  = get_cpu_time();
+
+    std::cout << "Wall Time = " << wall1 - wall0 << std::endl;
+    std::cout << "CPU Time  = " << cpu1  - cpu0  << std::endl;
 
     return 0;
 }

@@ -20,6 +20,9 @@
 #include <stdexcept>
 #include <limits>
 #include <memory>
+#include <string>
+#include <fstream>
+#include <sstream>
 
 template <class fd> class kdtree;
 
@@ -60,6 +63,9 @@ class kdtree
 
         std::vector <fd> search_kdtree(std::vector <fd> &data);
         std::vector <fd> search_kdtree(std::vector <fd> &data, node <fd> *subtree, std::vector <fd> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
+
+        node <fd> *serialize_tree(node <fd> *subtree, std::ofstream *file);
+        node <fd> *deserialize_tree(node <fd> *subtree, std::ifstream *file);
 
         void print_tree(node <fd> *subtree);
 };
