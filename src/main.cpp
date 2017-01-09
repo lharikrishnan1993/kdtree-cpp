@@ -161,10 +161,10 @@ int main()
     file.open("sample_data.csv");
     parser <double> (&whole_data, &file);
     file.close();
-
+/*
     double wall0 = get_wall_time();
     double cpu0  = get_cpu_time();
-
+*/
     root = build_tree(tree, &whole_data);
 
     //std::cout<<std::endl<<"Printing Tree..."<<std::endl;
@@ -184,6 +184,9 @@ int main()
     }
     fp << '/';
     fp.close();
+
+    double wall0 = get_wall_time();
+    double cpu0  = get_cpu_time();
 
     kdtree <double> tree2;
     node <double> *root2;
