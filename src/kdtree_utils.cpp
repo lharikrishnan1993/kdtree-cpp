@@ -28,14 +28,12 @@ node <fd>::node(std::vector <fd> &data, bool level)
 
 template <class fd>
 node <fd>::~node() {}
-
-/*
 template <class fd>
-node <fd>::node(const node <fd> &old)
+std::vector <fd> node <fd>::get_data() const
 {
-    std::cout<<"Copy constructor called"<<std::endl;
+    return this->data_point;
 }
-*/
+
 template <class fd>
 void node <fd>::check_point() const
 {
@@ -56,24 +54,17 @@ void node <fd>::check_point() const
 }
 
 template <class fd>
-kdtree <fd>::kdtree()
-{
-//    root = nullptr;
-//    std::cout<<"Building tree..."<<std::endl;
-}
+kdtree <fd>::kdtree() {}
 
 template <class fd>
 kdtree <fd>::~kdtree()
 {
-//    kill_tree(root);
     std::cout<<std::endl;
     std::cout<<"Tree destroyed."<<std::endl;
 }
 
-
 // Else case is a Leaf node with nullptr and were allocated in stack
 // (left, right, root & head(main.cpp)). Deletes automatically when out of scope.
-
 
 template <class fd>
 void kdtree <fd>::kill_tree(node <fd> *subtree)
@@ -134,7 +125,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, s
 }
 
 template <class fd>
-double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2)
+double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2) const
 {
     if (data1.size() != data2.size())
     {
@@ -174,21 +165,21 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_
 }
 */
 template <class fd>
-std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data)
+std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data)
 {
-    if (root.get() == nullptr) return root->data_point;
-    else return search_kdtree(data, root, root->data_point);
+    if (root.get() == nullptr) return root;
+    else return search_kdtree(data, root, root);
 }
 
 template <class fd>
-std::vector <fd> kdtree <fd>::search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::vector <fd> nearest, size_t depth, double best_dist)
+std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth, double best_dist)
 {
     if (subtree.get() == nullptr) return nearest;
 
     double temp_dist = distance(data, subtree->data_point);
     if (temp_dist < best_dist)
     {
-        nearest = subtree->data_point;
+        nearest = subtree;
         best_dist = temp_dist;
     }
 
@@ -267,7 +258,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::shared_ptr <node 
 }
 
 template <class fd>
-void kdtree <fd>::print_tree(std::shared_ptr <node <fd>> subtree)
+void kdtree <fd>::print_tree(std::shared_ptr <node <fd>> subtree) const
 {
     if (subtree.get() != nullptr)
     {

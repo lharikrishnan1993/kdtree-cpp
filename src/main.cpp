@@ -147,11 +147,29 @@ std::shared_ptr <node <double> > build_tree(kdtree <double> &tree, std::vector<s
     build_tree(tree, &details->data_right);
 }
 
+template <typename fd>
+double distance(const std::vector <fd> &data1, std::vector <fd> &data2)
+{
+    if (data1.size() != data2.size())
+    {
+        throw std::invalid_argument("Error->Incompatible dimensions. Wrong data.");
+    }
+    else
+    {
+        double sum = 0;
+        for (int dim=0; dim<data1.size(); dim++)
+        {
+            sum += pow(data1[dim]-data2[dim],2);
+        }
+        return sqrt(sum);
+    }
+}
+
 int main()
 {
     std::vector<std::vector<double>> whole_data;
     kdtree <double> tree;
-    node <double> *nn;
+    std::shared_ptr <node <double>> nn;
     std::shared_ptr <node <double>> root;
     std::vector <double> data;
 
@@ -198,16 +216,14 @@ int main()
     data = {51,5,25};
     try
     {
-        std::vector <double> dat = tree2.search_kdtree(data);
-        std::cout<<std::endl<<"Nearest Neigbor: "<<dat[0]<<" "<<dat[1]<<" "<<dat[2]<<std::endl;
+        nn = tree2.search_kdtree(data);
+        nn->check_point();
+        std::cout<<distance(nn->get_data(), data)<<std::endl;
     }
     catch (const std::invalid_argument& e )
     {
         std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
     }
-//    nn->check_point();
-
-
 
     double wall1 = get_wall_time();
     double cpu1  = get_cpu_time();

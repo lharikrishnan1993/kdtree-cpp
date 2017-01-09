@@ -36,10 +36,9 @@ class node
         bool collision;
 
     public:
-        node();
         node(std::vector <fd> &data, bool level=0);
         ~node();
-        //node(const node <fd> &old);
+        std::vector <fd> get_data() const;
         void check_point() const;
     friend class kdtree <fd>;
 };
@@ -58,18 +57,18 @@ class kdtree
         std::shared_ptr <node <fd> > insert_kdtree(std::vector <fd> &data);
         std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0, bool collsion_level=0);
 
-        double distance(std::vector <fd> &data1, std::vector <fd> &data2);
+        double distance(std::vector <fd> &data1, std::vector <fd> &data2) const;
 /*
         bool check_kdtree(std::vector <fd> &data);
         bool check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth=0);
 */
-        std::vector <fd> search_kdtree(std::vector <fd> &data);
-        std::vector <fd> search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::vector <fd> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
+        std::shared_ptr <node <fd>> search_kdtree(std::vector <fd> &data);
+        std::shared_ptr <node <fd>> search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity());
 
         std::shared_ptr <node <fd>> serialize_tree(std::shared_ptr <node <fd>> subtree, std::ofstream *file);
         std::shared_ptr <node <fd>> deserialize_tree(std::shared_ptr <node <fd>> subtree, std::ifstream *file);
 
-        void print_tree(std::shared_ptr <node <fd>> subtree);
+        void print_tree(std::shared_ptr <node <fd>> subtree) const;
 };
 
 #endif
