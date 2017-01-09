@@ -43,11 +43,10 @@ class node
 template <class fd>
 class kdtree
 {
-    public:
-    //private:
+    private:
         node <fd> *root;
 
-    //public:
+    public:
         kdtree();
         ~kdtree();
         void kill_tree(node <fd> *subtree);

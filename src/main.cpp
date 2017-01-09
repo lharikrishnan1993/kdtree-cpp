@@ -14,6 +14,39 @@
 #include "kdtree_utils.cpp"
 #include <algorithm>
 #include <map>
+#include <string>
+#include <fstream>
+#include <sstream>
+
+template <typename fd>
+void parser(std::vector<std::vector<fd>> *whole_data, std::ifstream *file)
+{
+    std::vector <fd> data;
+    fd num;
+
+    whole_data->clear();
+    data.clear();
+
+    std::string value, word;
+
+    while (file->good())
+    {
+        data.clear();
+        getline(*file, value, '\n');
+
+        std::stringstream stream(value);
+        while(getline(stream, word, ','))
+            {
+                std::stringstream ss;
+                ss << word;
+                ss >> num;
+                data.push_back(num);
+            }
+        whole_data->push_back(data);
+    }
+    whole_data->erase(whole_data->end());
+    std::cout<<"Parsed"<<std::endl;
+}
 
 node <double> *grow_kdtree(kdtree <double> *tree, std::vector <double> &data)
 {
@@ -98,7 +131,6 @@ node <double> *build_tree(kdtree <double> &tree, std::vector<std::vector<double>
 
     median_data *details = new median_data;
     get_median(details, dataset);
-
     root = grow_kdtree(&tree, details->data);
     build_tree(tree, &details->data_left);
     build_tree(tree, &details->data_right);
@@ -114,7 +146,9 @@ int main()
     node <double> *root;
     std::vector <double> data;
 
-    whole_data = {{50,0}, {25,1}, {75,1}, {60,2}, {100,5}, {10,6}, {49,3}};
+    std::ifstream file;
+    file.open("sample.csv");
+    parser <double> (&whole_data, &file);
 
     root = build_tree(tree, &whole_data);
 
@@ -122,9 +156,16 @@ int main()
     tree.print_tree(root);
 
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {51,5};
-    std::vector <double> dat = tree.search_kdtree(data);
-    std::cout<<std::endl<<"Nearest Neigbor: "<<dat[0]<<" "<<dat[1]<<std::endl;
+    data = {51,5,3};
+    try
+    {
+        std::vector <double> dat = tree.search_kdtree(data);
+        std::cout<<std::endl<<"Nearest Neigbor: "<<dat[0]<<" "<<dat[1]<<" "<<dat[2]<<std::endl;
+    }
+    catch (const std::invalid_argument& e )
+    {
+        std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
+    }
 //    nn->check_point();
 
     return 0;
