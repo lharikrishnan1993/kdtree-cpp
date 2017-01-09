@@ -9,7 +9,7 @@
 *       1) Provide facility to change the axis split and position split in run time.
 *
 *    @section Optimization Issues
-*       1) Add smart pointers
+*
 */
 
 #include "kdtree.h"
@@ -65,7 +65,7 @@ kdtree <fd>::~kdtree()
 
 // Else case is a Leaf node with nullptr and were allocated in stack
 // (left, right, root & head(main.cpp)). Deletes automatically when out of scope.
-
+/*
 template <class fd>
 void kdtree <fd>::kill_tree(node <fd> *subtree)
 {
@@ -76,7 +76,7 @@ void kdtree <fd>::kill_tree(node <fd> *subtree)
         kill_tree(subtree->right);
     }
 }
-
+*/
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data)
 {
@@ -99,6 +99,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, s
         std::shared_ptr<node <fd>> subtree = std::make_shared<node <fd>> (data, collision);
         return subtree;
     }
+
     fd axis = fmod(depth, data.size());
     if (data[axis] < subtree->data_point[axis])
     {

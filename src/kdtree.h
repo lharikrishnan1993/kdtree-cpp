@@ -52,7 +52,7 @@ class kdtree
     public:
         kdtree();
         ~kdtree();
-        void kill_tree(node <fd> *subtree);
+        //void kill_tree(node <fd> *subtree);
 
         std::shared_ptr <node <fd> > insert_kdtree(std::vector <fd> &data);
         std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0, bool collsion_level=0);
