@@ -52,6 +52,15 @@ void node <fd>::check_point() const
         if (this->right == nullptr) std::cout<<"Right is nullptr"<<std::endl;
     }
 }
+template <class fd>
+void node <fd>::print_data() const
+{
+    for (int dim=0; dim<this->data_point.size(); dim++)
+    {
+        std::cout<<data_point[dim]<<" ";
+    }
+}
+
 
 template <class fd>
 kdtree <fd>::kdtree() {}
@@ -59,8 +68,8 @@ kdtree <fd>::kdtree() {}
 template <class fd>
 kdtree <fd>::~kdtree()
 {
-    std::cout<<std::endl;
-    std::cout<<"Tree destroyed."<<std::endl;
+//    std::cout<<std::endl;
+//    std::cout<<"Tree destroyed."<<std::endl;
 }
 
 // Else case is a Leaf node with nullptr and were allocated in stack

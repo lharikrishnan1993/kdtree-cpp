@@ -40,6 +40,7 @@ class node
         ~node();
         std::vector <fd> get_data() const;
         void check_point() const;
+        void print_data() const;
     friend class kdtree <fd>;
 };
 

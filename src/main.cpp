@@ -172,19 +172,25 @@ int main()
     std::shared_ptr <node <double>> nn;
     std::shared_ptr <node <double>> root;
     std::vector <double> data;
-
-    std::ifstream file;
-    file.open("sample.csv");
-    parser <double> (&whole_data, &file);
-    file.close();
-
+/*
     double wall0 = get_wall_time();
     double cpu0  = get_cpu_time();
+*/
+    std::ifstream file;
+    file.open("sample_data.csv");
+    parser <double> (&whole_data, &file);
+    file.close();
+/*
+    double wall1 = get_wall_time();
+    double cpu1  = get_cpu_time();
 
+    std::cout << "Wall Time = " << wall1 - wall0 << std::endl;
+    std::cout << "CPU Time  = " << cpu1  - cpu0  << std::endl;
+*/
     root = build_tree(tree, &whole_data);
 
-    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
-    tree.print_tree(root);
+//    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
+//    tree.print_tree(root);
 
     std::ofstream fp;
     fp.open("tree.kd");
@@ -217,19 +223,13 @@ int main()
     try
     {
         nn = tree2.search_kdtree(data);
-        nn->check_point();
-        std::cout<<distance(nn->get_data(), data)<<std::endl;
+        nn->print_data();
+        std::cout<<": "<<distance(nn->get_data(), data)<<std::endl;
     }
     catch (const std::invalid_argument& e )
     {
         std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
     }
-
-    double wall1 = get_wall_time();
-    double cpu1  = get_cpu_time();
-
-    std::cout << "Wall Time = " << wall1 - wall0 << std::endl;
-    std::cout << "CPU Time  = " << cpu1  - cpu0  << std::endl;
 
     return 0;
 }
