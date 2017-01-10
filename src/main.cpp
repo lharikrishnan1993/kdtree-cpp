@@ -59,9 +59,10 @@ void parser(std::vector<std::vector<fd>> *whole_data, std::ifstream *file)
     std::cout<<"Parsed"<<std::endl;
 }
 
-std::shared_ptr <node <double> > grow_kdtree(kdtree <double> *tree, std::vector <double> &data)
+template <typename fd>
+std::shared_ptr <node <fd> > grow_kdtree(kdtree <fd> *tree, std::vector <fd> &data)
 {
-    std::shared_ptr <node <double>> head;
+    std::shared_ptr <node <fd>> head;
     static bool root_locater = 0;
     if (!root_locater)
     {
@@ -84,10 +85,11 @@ std::shared_ptr <node <double> > grow_kdtree(kdtree <double> *tree, std::vector 
     return head;
 }
 
-void get_split_axis(int *axis, std::vector<std::vector<double>> *dataset)
+template <typename fd>
+void get_split_axis(int *axis, std::vector<std::vector<fd>> *dataset)
 {
-    std::map<double,int> ranges;
-    std::vector <double> temp_vector;
+    std::map<fd, int> ranges;
+    std::vector <fd> temp_vector;
     ranges.clear();
 
     for (int i = 0; i < (*dataset)[0].size(); i++)
@@ -100,15 +102,17 @@ void get_split_axis(int *axis, std::vector<std::vector<double>> *dataset)
     *axis = ranges.rbegin()->second;
 }
 
+template <class fd>
 class median_data
 {
     public:
-        std::vector<double> data;
-        std::vector<std::vector <double>> data_left;
-        std::vector<std::vector <double>> data_right;
+        std::vector<fd> data;
+        std::vector<std::vector <fd>> data_left;
+        std::vector<std::vector <fd>> data_right;
 };
 
-void get_median(std::shared_ptr <median_data> median_details, std::vector<std::vector<double>> *dataset)
+template <typename fd>
+void get_median(std::shared_ptr <median_data <fd> > median_details, std::vector<std::vector<fd>> *dataset)
 {
     int axis = 0;
     get_split_axis(&axis, dataset);
@@ -116,14 +120,14 @@ void get_median(std::shared_ptr <median_data> median_details, std::vector<std::v
     median_details->data_right.clear();
     median_details->data.clear();
 
-    std::sort(dataset->begin(), dataset->end(), [axis](const std::vector <double> &a, const std::vector <double> &b)
+    std::sort(dataset->begin(), dataset->end(), [axis](const std::vector <fd> &a, const std::vector <fd> &b)
         { return  a.at(axis) < b.at(axis); });
 
     int median_index = 0;
     if (dataset->size()%2 == 0) median_index = dataset->size()/2 - 1;
     else median_index = dataset->size()/2;
 
-    std::vector<std::vector<double>>::iterator it;
+    typename std::vector<std::vector<fd>>::iterator it;
     int i = 0;
 
     for(it = dataset->begin(); it < dataset->end(); it++, i++ )
@@ -134,17 +138,19 @@ void get_median(std::shared_ptr <median_data> median_details, std::vector<std::v
     }
 }
 
-std::shared_ptr <node <double>> build_tree(kdtree <double> &tree, std::vector<std::vector<double>> *dataset)
+template <typename fd>
+std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
 {
-    std::shared_ptr <node <double>> build_tree_root;
+    std::shared_ptr <node <fd>> build_tree_root;
 
     if (dataset->size() == 0) return build_tree_root;
 
-    std::shared_ptr <median_data> details = std::make_shared <median_data> ();
+    std::shared_ptr <median_data <fd> > details = std::make_shared <median_data <fd>> ();
     get_median(details, dataset);
     build_tree_root = grow_kdtree(&tree, details->data);
     build_tree(tree, &details->data_left);
     build_tree(tree, &details->data_right);
+    return build_tree_root;
 }
 
 template <typename fd>
@@ -218,13 +224,13 @@ int main()
     {
         std::cout<<"Loading the tree from disk"<<std::endl;
         root2 = tree2.deserialize_tree(root2, &fil);
-    }
+        }
 
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {51,5,5};
+    data = {51,5};
     try
     {
-        nn = tree.search_kdtree(data);
+            nn = tree2.search_kdtree(data);
         nn->print_data();
         std::cout<<": "<<distance(nn->get_data(), data)<<std::endl;
     }

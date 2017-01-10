@@ -208,8 +208,8 @@ std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, s
 
     if (abs(data[axis] - subtree->data_point[axis]) < best_dist)
     {
-        if (search_left) nearest = search_kdtree(data, subtree->right, nearest, depth+1, best_dist);
-        else nearest = search_kdtree(data, subtree->left, nearest, depth+1, best_dist);
+        if (search_left) nearest = search_kdtree(data, subtree->right, nearest, depth, best_dist);
+        else nearest = search_kdtree(data, subtree->left, nearest, depth, best_dist);
     }
     return nearest;
 }
