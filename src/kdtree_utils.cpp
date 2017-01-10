@@ -8,8 +8,6 @@
 *    @section Updates to make
 *       1) Provide facility to change the axis split and position split in run time.
 *
-*    @section Optimization Issues
-*
 */
 
 #include "kdtree.h"
@@ -180,7 +178,6 @@ template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth, double best_dist) const
 {
     if (subtree.get() == nullptr) return nearest;
-    //std::cout<<data.size()<<" "<<subtree->data_point.size()<<std::endl;
     double temp_dist = distance(data, subtree->data_point);
     if (temp_dist < best_dist)
     {

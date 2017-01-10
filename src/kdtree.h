@@ -1,13 +1,9 @@
 /**
 *    @author Harikrishnan Lakshmanan
 *    @file kdtree.h
-*    @date 01/06/2017
+*    @date 01/10/2017
 *
 *    @brief Uber Coding Assignment, Kd Tree Implementation in C++.
-*
-*    @section Updates to make
-*
-*    @section Optimization Issues
 */
 
 #ifndef KDTREE_H
@@ -137,7 +133,7 @@ namespace kdspace
     }
 
     template <typename fd>
-    void get_split_axis(int *axis, std::vector<std::vector<fd>> *dataset)
+    void get_split_axis(int *axis, std::vector<std::vector<fd>> *dataset, const size_t val=0, const size_t depth=0)
     {
         std::map<fd, int> ranges;
         std::vector <fd> temp_vector;
@@ -150,7 +146,9 @@ namespace kdspace
                 temp_vector.push_back((*dataset)[j][i]);
             ranges[*std::max_element(temp_vector.begin(), temp_vector.end()) - *std::min_element(temp_vector.begin(), temp_vector.end())] = i;
         }
-        *axis = ranges.rbegin()->second;
+        if (val == 0) *axis = ranges.rbegin()->second;
+        else if (val == 1) *axis = ranges.begin()->second;
+        else *axis = depth;
     }
 
     template <class fd>
@@ -163,29 +161,37 @@ namespace kdspace
     };
 
     template <typename fd>
-    void get_median(std::shared_ptr <median_data <fd> > median_details, std::vector<std::vector<fd>> *dataset)
+    void get_median(std::shared_ptr <median_data <fd> > median_details, std::vector<std::vector<fd>> *dataset, const double val=0.5)
     {
-        int axis = 0;
-        get_split_axis(&axis, dataset);
-        median_details->data_left.clear();
-        median_details->data_right.clear();
-        median_details->data.clear();
-
-        std::sort(dataset->begin(), dataset->end(), [axis](const std::vector <fd> &a, const std::vector <fd> &b)
-            { return  a.at(axis) < b.at(axis); });
-
-        int median_index = 0;
-        if (dataset->size()%2 == 0) median_index = dataset->size()/2 - 1;
-        else median_index = dataset->size()/2;
-
-        typename std::vector<std::vector<fd>>::iterator it;
-        int i = 0;
-
-        for(it = dataset->begin(); it < dataset->end(); it++, i++ )
+        if (val < 1)
         {
-            if (i < median_index) median_details->data_left.push_back(*it);
-            else if (i > median_index) median_details->data_right.push_back(*it);
-            else median_details->data = *it;
+            int axis = 0;
+
+            get_split_axis(&axis, dataset);
+            median_details->data_left.clear();
+            median_details->data_right.clear();
+            median_details->data.clear();
+
+            std::sort(dataset->begin(), dataset->end(), [axis](const std::vector <fd> &a, const std::vector <fd> &b)
+                { return  a.at(axis) < b.at(axis); });
+
+            int median_index = 0;
+            if (dataset->size()%2 == 0) median_index = dataset->size()*val - 1;
+            else median_index = dataset->size()*val;
+
+            typename std::vector<std::vector<fd>>::iterator it;
+            int i = 0;
+
+            for(it = dataset->begin(); it < dataset->end(); it++, i++ )
+            {
+                if (i < median_index) median_details->data_left.push_back(*it);
+                else if (i > median_index) median_details->data_right.push_back(*it);
+                else median_details->data = *it;
+            }
+        }
+        else
+        {
+            throw std::invalid_argument("Error-> Split Position value (instead of median) must be less than 1.0");
         }
     }
 
@@ -207,20 +213,6 @@ namespace kdspace
         }
     }
 /*
-    template <typename fd>
-    std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
-    {
-        std::shared_ptr <node <fd>> build_tree_root;
-
-        if (dataset->size() == 0) return build_tree_root;
-
-        std::shared_ptr <median_data <fd> > details = std::make_shared <median_data <fd>> ();
-        get_median(details, dataset);
-        build_tree_root = grow_kdtree(&tree, details->data);
-        build_tree(tree, &details->data_left);
-        build_tree(tree, &details->data_right);
-        return build_tree_root;
-    }
 
     template <typename fd>
     void query_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std::ofstream *file)

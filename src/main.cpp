@@ -32,7 +32,14 @@ std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vecto
     if (dataset->size() == 0) return build_tree_root;
 
     std::shared_ptr <median_data <fd> > details = std::make_shared <median_data <fd>> ();
-    get_median(details, dataset);
+    try
+    {
+        get_median(details, dataset, 0.5);
+    }
+    catch (const std::invalid_argument& e)
+    {
+        std::cout<<e.what()<<std::endl;
+    }
     build_tree_root = grow_kdtree(&tree, details->data);
     build_tree(tree, &details->data_left);
     build_tree(tree, &details->data_right);
@@ -177,7 +184,7 @@ int main()
 /**
     Querying the tree for the given data
 */
-
+/*
     std::ofstream file_op;
     file_op.open("query_output.txt", std::ios::binary);
     if (file_op.bad())
@@ -198,6 +205,6 @@ int main()
         }
     }
     file_op.close();
-
+*/
     return 0;
 }
