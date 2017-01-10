@@ -26,7 +26,7 @@ std::shared_ptr <node <fd>> build_kdtree(kdtree <fd> &tree, std::vector<std::vec
     std::shared_ptr <median_data <fd> > details = std::make_shared <median_data <fd>> ();
     try
     {
-        get_median(details, dataset, 0.5);
+        get_median(details, dataset);
     }
     catch (const std::invalid_argument& e)
     {
