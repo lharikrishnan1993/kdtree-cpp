@@ -54,10 +54,15 @@ void node <fd>::check_point() const
 template <class fd>
 void node <fd>::print_data() const
 {
-    for (int dim=0; dim<this->data_point.size(); dim++)
+    typename std::vector<fd>::iterator itin;
+    std::cout<<" (";
+    for (int i=0 ; i < data_point.size();)
     {
-        std::cout<<data_point[dim]<<" ";
+        std::cout<<data_point[i];
+        i++;
+        if (i != data_point.size()) std::cout<<", ";
     }
+    std::cout<<") ";
 }
 
 
@@ -218,7 +223,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <f
 }
 
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::shared_ptr <node <fd>> subtree, std::ifstream *file)
+std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::ifstream *file)
 {
     std::vector<fd> data;
     std::string value, word, whole_data;
