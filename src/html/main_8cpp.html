@@ -75,12 +75,6 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae9530b09b27f0c6e5c8836ecbfad493f"><td class="memItemLeft" align="right" valign="top"><a id="ae9530b09b27f0c6e5c8836ecbfad493f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>get_wall_time</b> ()</td></tr>
-<tr class="separator:ae9530b09b27f0c6e5c8836ecbfad493f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdbcf9be8c879dddacc5aed7d31d7c84"><td class="memItemLeft" align="right" valign="top"><a id="acdbcf9be8c879dddacc5aed7d31d7c84"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>get_cpu_time</b> ()</td></tr>
-<tr class="separator:acdbcf9be8c879dddacc5aed7d31d7c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3317d031936f4b8ea8d9e152ad3c0c9a"><td class="memTemplParams" colspan="2">template&lt;typename fd &gt; </td></tr>
 <tr class="memitem:a3317d031936f4b8ea8d9e152ad3c0c9a"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classnode.html">node</a>&lt; fd &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a3317d031936f4b8ea8d9e152ad3c0c9a">build_kdtree</a> (<a class="el" href="classkdtree.html">kdtree</a>&lt; fd &gt; &amp;tree, std::vector&lt; std::vector&lt; fd &gt;&gt; *dataset)</td></tr>
 <tr class="memdesc:a3317d031936f4b8ea8d9e152ad3c0c9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The build_kdtree function as asked in the question paper.  <a href="#a3317d031936f4b8ea8d9e152ad3c0c9a">More...</a><br /></td></tr>
@@ -89,8 +83,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>get_cpu_time</b> ()
 <tr class="memitem:acf362c5093becdcf57f6ca0fd01d59e3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="main_8cpp.html#acf362c5093becdcf57f6ca0fd01d59e3">query_kdtree</a> (<a class="el" href="classkdtree.html">kdtree</a>&lt; fd &gt; &amp;tree, std::vector&lt; std::vector&lt; fd &gt;&gt; *dataset, std::ofstream *file)</td></tr>
 <tr class="memdesc:acf362c5093becdcf57f6ca0fd01d59e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The query_kdtree function as asked in the question paper. The output as required in the question paper has been created as .txt file.  <a href="#acf362c5093becdcf57f6ca0fd01d59e3">More...</a><br /></td></tr>
 <tr class="separator:acf362c5093becdcf57f6ca0fd01d59e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
-<tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
+<tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Uber Coding Assignment, Kd Tree Implementation in C++. </p>
@@ -136,8 +130,8 @@ template&lt;typename fd &gt; </div>
 
 </div>
 </div>
-<a id="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae66f6b31b5ad750f1fe042a706a4e3d4">&#9670;&nbsp;</a></span>main()</h2>
+<a id="a0ddf1224851353fc92bfbff6f499fa97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ddf1224851353fc92bfbff6f499fa97">&#9670;&nbsp;</a></span>main()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,20 +139,32 @@ template&lt;typename fd &gt; </div>
         <tr>
           <td class="memname">int main </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Parsing from file to extract the data to be inserted in the Kd-tree.</p>
 <p>Building the Kd-tree using the parsed data.</p>
-<p>Printing the tree devoloped using the parsed data.</p>
 <p>Storing the devoloped tree (serialization) into a file named tree.kd</p>
 <p>Retrieving the tree (deserialization) from the file stored on disk.</p>
-<p>Printing the tree devoloped using the stored file, 'tree.kd'.</p>
-<p>Searching the tree to get the nearest neighbor and the corresponding euclidean distance.</p>
-<p>Checking if the given data exists in the tree.</p>
 <p>Parsing from file to extract the data to be queried in the Kd-tree.</p>
+<p>Querying the tree for the given data</p>
+<p>User command based. Only two are currently available. '-b' to build and '-d' to deserialize a given .kd file. Both of them query and store the file in the requested format with euclidean distance and the index.</p>
+<p>Parsing from file to extract the data to be inserted in the Kd-tree.</p>
+<p>Building the Kd-tree using the parsed data.</p>
+<p>Querying the tree for the given data</p>
 <p>Querying the tree for the given data</p>
 
 </div>

@@ -11,17 +11,11 @@ Uber Coding Assignment, Kd Tree Implementation in C++.
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{main_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}\label{main_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}} 
-double {\bfseries get\+\_\+wall\+\_\+time} ()
-\item 
-\mbox{\Hypertarget{main_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}\label{main_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}} 
-double {\bfseries get\+\_\+cpu\+\_\+time} ()
-\item 
 {\footnotesize template$<$typename fd $>$ }\\std\+::shared\+\_\+ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$ $>$ \hyperlink{main_8cpp_a3317d031936f4b8ea8d9e152ad3c0c9a}{build\+\_\+kdtree} (\hyperlink{classkdtree}{kdtree}$<$ fd $>$ \&tree, std\+::vector$<$ std\+::vector$<$ fd $>$$>$ $\ast$dataset)
 \begin{DoxyCompactList}\small\item\em The build\+\_\+kdtree function as asked in the question paper. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename fd $>$ }\\void \hyperlink{main_8cpp_acf362c5093becdcf57f6ca0fd01d59e3}{query\+\_\+kdtree} (\hyperlink{classkdtree}{kdtree}$<$ fd $>$ \&tree, std\+::vector$<$ std\+::vector$<$ fd $>$$>$ $\ast$dataset, std\+::ofstream $\ast$file)
 \begin{DoxyCompactList}\small\item\em The query\+\_\+kdtree function as asked in the question paper. The output as required in the question paper has been created as .txt file. \end{DoxyCompactList}\item 
-int \hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+int \hyperlink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
 \end{DoxyCompactItemize}
 
 
@@ -56,29 +50,31 @@ The build\+\_\+kdtree function as asked in the question paper.
 \begin{DoxyReturn}{Returns}
 The root of the tree so that it can be used to manipulate the tree as and when required. 
 \end{DoxyReturn}
-\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\mbox{\Hypertarget{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
 \index{main.\+cpp@{main.\+cpp}!main@{main}}
 \index{main@{main}!main.\+cpp@{main.\+cpp}}
 \subsubsection{\texorpdfstring{main()}{main()}}
-{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
 
 Parsing from file to extract the data to be inserted in the Kd-\/tree.
 
 Building the Kd-\/tree using the parsed data.
 
-Printing the tree devoloped using the parsed data.
-
 Storing the devoloped tree (serialization) into a file named tree.\+kd
 
 Retrieving the tree (deserialization) from the file stored on disk.
 
-Printing the tree devoloped using the stored file, \textquotesingle{}tree.\+kd\textquotesingle{}.
-
-Searching the tree to get the nearest neighbor and the corresponding euclidean distance.
-
-Checking if the given data exists in the tree.
-
 Parsing from file to extract the data to be queried in the Kd-\/tree.
+
+Querying the tree for the given data
+
+User command based. Only two are currently available. \textquotesingle{}-\/b\textquotesingle{} to build and \textquotesingle{}-\/d\textquotesingle{} to deserialize a given .kd file. Both of them query and store the file in the requested format with euclidean distance and the index.
+
+Parsing from file to extract the data to be inserted in the Kd-\/tree.
+
+Building the Kd-\/tree using the parsed data.
+
+Querying the tree for the given data
 
 Querying the tree for the given data\mbox{\Hypertarget{main_8cpp_acf362c5093becdcf57f6ca0fd01d59e3}\label{main_8cpp_acf362c5093becdcf57f6ca0fd01d59e3}} 
 \index{main.\+cpp@{main.\+cpp}!query\+\_\+kdtree@{query\+\_\+kdtree}}
