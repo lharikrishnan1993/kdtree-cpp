@@ -1,0 +1,66 @@
+\hypertarget{main_8cpp}{}\section{main.\+cpp File Reference}
+\label{main_8cpp}\index{main.\+cpp@{main.\+cpp}}
+
+
+Uber Coding Assignment, Kd Tree Implementation in C++.  
+
+
+{\ttfamily \#include \char`\"{}kdtree\+\_\+utils.\+cpp\char`\"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$sys/time.\+h$>$}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}\label{main_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}} 
+double {\bfseries get\+\_\+wall\+\_\+time} ()
+\item 
+\mbox{\Hypertarget{main_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}\label{main_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}} 
+double {\bfseries get\+\_\+cpu\+\_\+time} ()
+\item 
+\mbox{\Hypertarget{main_8cpp_a3317d031936f4b8ea8d9e152ad3c0c9a}\label{main_8cpp_a3317d031936f4b8ea8d9e152ad3c0c9a}} 
+{\footnotesize template$<$typename fd $>$ }\\std\+::shared\+\_\+ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$ $>$ {\bfseries build\+\_\+kdtree} (\hyperlink{classkdtree}{kdtree}$<$ fd $>$ \&tree, std\+::vector$<$ std\+::vector$<$ fd $>$$>$ $\ast$dataset)
+\item 
+\mbox{\Hypertarget{main_8cpp_acf362c5093becdcf57f6ca0fd01d59e3}\label{main_8cpp_acf362c5093becdcf57f6ca0fd01d59e3}} 
+{\footnotesize template$<$typename fd $>$ }\\void {\bfseries query\+\_\+kdtree} (\hyperlink{classkdtree}{kdtree}$<$ fd $>$ \&tree, std\+::vector$<$ std\+::vector$<$ fd $>$$>$ $\ast$dataset, std\+::ofstream $\ast$file)
+\item 
+int \hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Uber Coding Assignment, Kd Tree Implementation in C++. 
+
+\begin{DoxyAuthor}{Author}
+Harikrishnan Lakshmanan
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/10/2017 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.\+cpp@{main.\+cpp}!main@{main}}
+\index{main@{main}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Parsing from file to extract the data to be inserted in the Kd-\/tree.
+
+Building the Kd-\/tree using the parsed data.
+
+Printing the tree devoloped using the parsed data.
+
+Storing the devoloped tree (serialization) into a file named tree.\+kd
+
+Retrieving the tree (deserialization) from the file stored on disk.
+
+Printing the tree devoloped using the stored file, \textquotesingle{}tree.\+kd\textquotesingle{}.
+
+Searching the tree to get the nearest neighbor and the corresponding euclidean distance.
+
+Checking if the given data exists in the tree.
+
+Parsing from file to extract the data to be queried in the Kd-\/tree.
+
+Querying the tree for the given data

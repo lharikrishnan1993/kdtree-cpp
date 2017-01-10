@@ -1,17 +1,19 @@
 /**
 *    @author Harikrishnan Lakshmanan
 *    @file kdtree_utils.cpp
-*    @date 01/06/2017
+*    @date 01/10/2017
 *
 *    @brief Uber Coding Assignment, Kd Tree Implementation in C++.
-*
-*    @section Updates to make
-*       1) Provide facility to change the axis split and position split in run time.
 *
 */
 
 #include "kdtree.h"
-
+/**
+*   @param Data and collision level
+*   @return Does not return anything. Just upadtes the values.
+*   @brief Parses the index from the data and updates both of them alonside the collision.
+*       If collision is high, the value is disregarded as duplicate and is ignored.
+*/
 template <class fd>
 node <fd>::node(std::vector <fd> &data, bool level)
 {
@@ -24,22 +26,36 @@ node <fd>::node(std::vector <fd> &data, bool level)
         collision = level;
     }
 }
-
+/**
+*   @brief Destructor. All are smart pointers and hence don't require to explicitely delete them.
+*/
 template <class fd>
 node <fd>::~node() {}
-
+/**
+*   @param None
+*   @return data of the concerned node
+*   @brief Returns the data so as to process it later.
+*/
 template <class fd>
 std::vector <fd> node <fd>::get_data() const
 {
     return this->data_point;
 }
-
+/**
+*   @param None
+*   @return index of the concerned node in the sample input
+*   @brief Returns the index so as to process it later.
+*/
 template <class fd>
 fd node <fd>::get_index() const
 {
     return this->index;
 }
-
+/**
+*   @param None
+*   @return None
+*   @brief Prints the data and pointers for verification, display and debugging purposes.
+*/
 template <class fd>
 void node <fd>::check_point() const
 {
@@ -58,7 +74,11 @@ void node <fd>::check_point() const
         if (this->right == nullptr) std::cout<<"Right is nullptr"<<std::endl;
     }
 }
-
+/**
+*   @param None
+*   @return None
+*   @brief Prints the data and pointers for verification, display and debugging purposes.
+*/
 template <class fd>
 void node <fd>::print_data() const
 {
@@ -72,13 +92,26 @@ void node <fd>::print_data() const
     }
     std::cout<<") ";
 }
-
+/**
+*   @param None
+*   @return None
+*   @brief Constructor for the kd tree
+*/
 template <class fd>
 kdtree <fd>::kdtree() {}
-
+/**
+*   @param None
+*   @return None
+*   @brief Destructor for the kd tree
+*/
 template <class fd>
 kdtree <fd>::~kdtree() {}
-
+/**
+*   @param data to be inserted
+*   @return pointer to the root of the tree so that, it can manipulate wherever required.
+*   @brief Creates the root, if it is null, else, passes it to the another insert function
+*       which performs the same function recursively.
+*/
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data)
 {
@@ -92,7 +125,12 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data)
         return insert_kdtree(data, root);
     }
 }
-
+/**
+*   @param data to be inserted, layer at which it is to be inserted, the subtree and collision value
+*   @return pointer to the root of the tree so that, it can manipulate wherever required.
+*   @brief the fundamental logic of insertion in kd tree and the explaination can be found at
+*       https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf
+*/
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth, bool collision)
 {
@@ -126,7 +164,10 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, s
     }
     return subtree;
 }
-
+/**
+*   @param Two vector data points, within which the euclidean distance is to be identified.
+*   @return Returns the distance.
+*/
 template <class fd>
 double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2) const
 {
@@ -144,14 +185,23 @@ double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2) c
         return sum;
     }
 }
-
+/**
+*   @param data to be checked for.
+*   @return a boolean value. true if the data exists and false if not.
+*   @brief checks if the root is null (or if not tree exists) and returns itself if so. Else, sends the
+*       data to another function which performs the same recursively through layers.
+*/
 template <class fd>
 bool kdtree <fd>::check_kdtree(std::vector <fd> &data) const
 {
     if (root.get() == nullptr) return false;
     else return check_kdtree(data, root);
 }
-
+/**
+*   @param data to be checked for.
+*   @return a boolean value. true if the data exists and false if not.
+*   @brief iteratively traverses the tree using preorder traversal technique and returns true if any node matches else returns false.
+*/
 template <class fd>
 bool kdtree <fd>::check_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth) const
 {
@@ -166,14 +216,26 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd
     }
     return check_kdtree(data, subtree->right, depth+1);
 }
-
+/**
+*   @param data to which the nearest neighbor is to be identified.
+*   @return returns the pointer to the node which is the nearest neighbor thr given data.
+*   @brief checks if the root is null (or if not tree exists) and returns itself if so. Else, sends the
+*       data to another function which performs the same recursively through layers.
+*/
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data) const
 {
     if (root.get() == nullptr) return root;
     else return search_kdtree(data, root, root);
 }
-
+/**
+*   @param data to which the nearest neighbor is to be identified.
+*   @return returns the pointer to the node which is the nearest neighbor thr given data.
+*   @brief Iterativelyruns through the tree to identify the nearest neighbor using pre order traversal,
+*       but this can only solve the problem if the nearest neighbor is on the same brach. Else, it is hard and a
+*       legitimate solution has been provided at https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf
+*       and the code was inspired from this.
+*/
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth, double best_dist) const
 {
@@ -206,7 +268,11 @@ std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, s
     }
     return nearest;
 }
-
+/**
+*   @param file to which data is to be written and the required node of the tree(root by default).
+*   @return returns the subtree if it reaches the end of the file. If null, will return the subtree as it is.
+*   @brief stores the data into a file called 'tree.kd'
+ */
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <fd>> subtree, std::ofstream *file) const
 {
@@ -228,7 +294,11 @@ std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <f
     serialize_tree(subtree->right, file);
     return subtree;
 }
-
+/**
+*   @param file from which data is to be read and the required node of the tree(root by default).
+*   @return returns the subtree if it reaches the end of the file. If null, will return the subtree as it is.
+*   @brief parses the data in order from the file, thus saving a lot of time in creating the tree for usage.
+ */
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::ifstream *file)
 {
@@ -260,7 +330,11 @@ std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::ifstream *file)
     }
     return head;
 }
-
+/**
+*   @param The required node of the tree(root by default).
+*   @return None
+*   @brief Prints the node using check point so as to see all the data (or) tree.
+ */
 template <class fd>
 void kdtree <fd>::print_tree(std::shared_ptr <node <fd>> subtree) const
 {

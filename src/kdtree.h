@@ -27,32 +27,32 @@ template <class fd>
 class node
 {
     private:
-        std::vector <fd> data_point;        /*!< Detailed description after the member */
-        std::shared_ptr <node <fd>> left;   /*!< Detailed description after the member */
-        std::shared_ptr <node <fd>> right;  /*!< Detailed description after the member */
-        bool collision;                     /*!< Detailed description after the member */
-        fd index;
+        std::vector <fd> data_point;        /*!< Storage for data */
+        std::shared_ptr <node <fd>> left;   /*!< Pointer to the left node */
+        std::shared_ptr <node <fd>> right;  /*!< Pointer to the right node */
+        bool collision;                     /*!< Collision count of a node */
+        fd index;                           /*!< Index of the data (associated with this node) in the input file */
 
     public:
-        node(std::vector <fd> &data, bool level=0);
-        ~node();
-        fd get_index() const;
-        std::vector <fd> get_data() const;
-        void check_point() const;
-        void print_data() const;
+        node(std::vector <fd> &data, bool level=0);     /*!< Constructor. Identifies the index from data and updates both of them. If collision is true, it is rejected as duplicate data. */
+        ~node();                            /*!< Destructor. All are smart pointers or stack variables and hence will get destroyed automatically */
+        fd get_index() const;               /*!< Returns the index in the input file for the concerned node data */
+        std::vector <fd> get_data() const;  /*!< Returns the data so as to process it later. */
+        void check_point() const;           /*!< Prints data and the nodes values. Just to check if they are pointing to null or not. */
+        void print_data() const;            /*!< Prints the data alone. Basically, useful for debugging, checking purposes.*/
 
-    friend class kdtree <fd>;
+    friend class kdtree <fd>;               /*!< Class 'kdtree' is a friend of the class 'node', so as to access the private members. */
 };
 
 template <class fd>
 class kdtree
 {
     private:
-        std::shared_ptr <node <fd>> root;   /*!< Detailed description after the member */
+        std::shared_ptr <node <fd>> root;   /*!< Root (or) Head of the tree*/
 
     public:
-        kdtree();
-        ~kdtree();
+        kdtree();                           /*!< Constructor. Creates a tree. */
+        ~kdtree();                          /*!< Destructor. All are smart pointers and hence will get destroyed automatically */
 
         std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data);
         std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0, bool collsion_level=0);
@@ -70,9 +70,17 @@ class kdtree
 
         void print_tree(std::shared_ptr <node <fd>> subtree) const;
 };
-
+/**
+* A namespace to hold some of the important functions pertaining to the functioning and interfacing to the classes
+* to the required functions.
+*/
 namespace kdspace
 {
+/**
+*   @param A holder of type vector of vector into which the parsed data will be filled. A file which holds the data to be parsed.
+*   @return Values were filled into the concerned containersa and hence does not return anything.
+*   @brief Clears the containers, and later, using stringstream the data in the file is parsed and then pushed back into the vector.
+*/
     template <typename fd>
     void parser(std::vector<std::vector<fd>> *whole_data, std::ifstream *file)
     {
@@ -106,6 +114,12 @@ namespace kdspace
         std::cout<<"Parsed"<<std::endl;
     }
 
+/**
+*   @param The tree into which the provided data is to be inserted.
+*   @return The root or head of the tree is returned so that, the root of the tree can always be accessed from anywhere in the main function.
+*   @brief This is an interface function and hence takes care of the necessary functionalities in order to use the 'insert_tree' function.
+*/
+
     template <typename fd>
     std::shared_ptr <node <fd> > grow_kdtree(kdtree <fd> *tree, std::vector <fd> &data)
     {
@@ -132,6 +146,17 @@ namespace kdspace
         return head;
     }
 
+/**
+*   @param A holder of type vector of vector which holds the complete data. Container to fill in the split axis,
+*           and values that determine which splitting strategy is to be used. By default, both the vaues, remain 0,
+*           that is, it figures out the dimension which has the greatest variance. Parameter 'val' can be changed to
+*           1 to get the dimension with least variance leading to the worst heuristic possible. If it is neither 0 nor 1,
+*           code expects the depth value and will return it as same and this can be utilized to determine as=ny user
+*           defined strategy.
+*   @return Values were filled into the concerned containers and hence does not return anything.
+*   @brief This decides the axis on which the data is to split. This value maintains the balance of the tree.
+*/
+
     template <typename fd>
     void get_split_axis(int *axis, std::vector<std::vector<fd>> *dataset, const size_t val=0, const size_t depth=0)
     {
@@ -151,6 +176,11 @@ namespace kdspace
         else *axis = depth;
     }
 
+/**
+*   @brief Median_Data: This class serves to be a holder of a bunch of data, namely, the point at
+*           which the data was split and the data to the left and the data to the right.
+*/
+
     template <class fd>
     class median_data
     {
@@ -159,6 +189,15 @@ namespace kdspace
             std::vector<std::vector <fd>> data_left;
             std::vector<std::vector <fd>> data_right;
     };
+
+/**
+*   @param The pointer to the class containerto hold the median details. The complete dataset to recursively,
+*           split it and the hyperparameter to choose and move the split position in the decided dimension.
+*   @return The split data is inserted to the class object and it reflects in the called location. Hence, does not return anything.
+*   @brief This chooses the split position given a dimension to split on from the 'get_split_axis' function.
+*           This too determines the balance of the tree. The value can range anywhere between 0 and 1 (both not
+*           included). If not will return exception.
+*/
 
     template <typename fd>
     void get_median(std::shared_ptr <median_data <fd> > median_details, std::vector<std::vector<fd>> *dataset, const double val=0.5)
@@ -194,6 +233,11 @@ namespace kdspace
             throw std::invalid_argument("Error-> Split Position value (instead of median) must be less than 1.0");
         }
     }
+
+/**
+*   @param Two vector data points, within which the euclidean distance is to be identified.
+*   @return Returns the distance.
+*/
 
     template <typename fd>
     double distance(const std::vector <fd> &data1, std::vector <fd> &data2)

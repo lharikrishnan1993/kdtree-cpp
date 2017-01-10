@@ -1,0 +1,58 @@
+\hypertarget{kdtree_8h}{}\section{kdtree.\+h File Reference}
+\label{kdtree_8h}\index{kdtree.\+h@{kdtree.\+h}}
+
+
+Uber Coding Assignment, Kd Tree Implementation in C++.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classkdtree}{kdtree$<$ fd $>$}
+\item 
+class \hyperlink{classnode}{node$<$ fd $>$}
+\item 
+class \hyperlink{classkdtree}{kdtree$<$ fd $>$}
+\item 
+class \hyperlink{classkdspace_1_1median__data}{kdspace\+::median\+\_\+data$<$ fd $>$}
+\begin{DoxyCompactList}\small\item\em Median\+\_\+\+Data\+: This class serves to be a holder of a bunch of data, namely, the point at which the data was split and the data to the left and the data to the right. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacekdspace}{kdspace}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename fd $>$ }\\void \hyperlink{namespacekdspace_ae38cb61fa0fc73b8cced4a1bc0fb1d58}{kdspace\+::parser} (std\+::vector$<$ std\+::vector$<$ fd $>$$>$ $\ast$whole\+\_\+data, std\+::ifstream $\ast$file)
+\begin{DoxyCompactList}\small\item\em Clears the containers, and later, using stringstream the data in the file is parsed and then pushed back into the vector. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\std\+::shared\+\_\+ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$ $>$ \hyperlink{namespacekdspace_a0c2e28665e0ac98030cc9b0d8e017435}{kdspace\+::grow\+\_\+kdtree} (\hyperlink{classkdtree}{kdtree}$<$ fd $>$ $\ast$tree, std\+::vector$<$ fd $>$ \&data)
+\begin{DoxyCompactList}\small\item\em This is an interface function and hence takes care of the necessary functionalities in order to use the \textquotesingle{}insert\+\_\+tree\textquotesingle{} function. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\void \hyperlink{namespacekdspace_a4b05e61a7246f9455a62996475eb7bf2}{kdspace\+::get\+\_\+split\+\_\+axis} (int $\ast$axis, std\+::vector$<$ std\+::vector$<$ fd $>$$>$ $\ast$dataset, const size\+\_\+t val=0, const size\+\_\+t depth=0)
+\begin{DoxyCompactList}\small\item\em This decides the axis on which the data is to split. This value maintains the balance of the tree. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\void \hyperlink{namespacekdspace_a4f7e287c43237fb7400437c8ecf955f3}{kdspace\+::get\+\_\+median} (std\+::shared\+\_\+ptr$<$ median\+\_\+data$<$ fd $>$ $>$ median\+\_\+details, std\+::vector$<$ std\+::vector$<$ fd $>$$>$ $\ast$dataset, const double val=0.\+5)
+\begin{DoxyCompactList}\small\item\em This chooses the split position given a dimension to split on from the \textquotesingle{}get\+\_\+split\+\_\+axis\textquotesingle{} function. This too determines the balance of the tree. The value can range anywhere between 0 and 1 (both not included). If not will return exception. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\double \hyperlink{namespacekdspace_a3221e9795dbfa52b58ac53740c4a4354}{kdspace\+::distance} (const std\+::vector$<$ fd $>$ \&data1, std\+::vector$<$ fd $>$ \&data2)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Uber Coding Assignment, Kd Tree Implementation in C++. 
+
+\begin{DoxyAuthor}{Author}
+Harikrishnan Lakshmanan
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/10/2017 
+\end{DoxyDate}
