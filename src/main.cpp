@@ -1,13 +1,9 @@
 /**
 *    @author Harikrishnan Lakshmanan
 *    @file main.cpp
-*    @date 01/06/2017
+*    @date 01/10/2017
 *
 *    @brief Uber Coding Assignment, Kd Tree Implementation in C++.
-*
-*    @section Updates to make
-*
-*    @section Optimization Issues
 */
 
 #include "kdtree_utils.cpp"
@@ -28,6 +24,37 @@ double get_cpu_time(){
 
 using namespace kdspace;
 
+template <typename fd>
+std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
+{
+    std::shared_ptr <node <fd>> build_tree_root;
+
+    if (dataset->size() == 0) return build_tree_root;
+
+    std::shared_ptr <median_data <fd> > details = std::make_shared <median_data <fd>> ();
+    get_median(details, dataset);
+    build_tree_root = grow_kdtree(&tree, details->data);
+    build_tree(tree, &details->data_left);
+    build_tree(tree, &details->data_right);
+    return build_tree_root;
+}
+
+template <typename fd>
+void query_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std::ofstream *file)
+{
+    std::shared_ptr <node <fd>> nn;
+    std::vector <fd> data;
+    if (dataset->size() == 0) return;
+
+    typename std::vector<std::vector<fd>>::iterator it;
+    for(it = dataset->begin(); it != dataset->end(); it++)
+    {
+        (*it).erase((*it).begin());
+        nn = tree.search_kdtree(*it);
+        *file<<nn->get_index()<<", "<<kdspace::distance(nn->get_data(), *it)<<'\n';
+    }
+}
+
 int main()
 {
     std::vector <double> data;
@@ -46,7 +73,7 @@ int main()
     Parsing from file to extract the data to be inserted in the Kd-tree.
 */
     std::ifstream file;
-    file.open("sample.csv");
+    file.open("sample_data.csv");
     parser <double> (&whole_data, &file);
     file.close();
 
@@ -58,7 +85,7 @@ int main()
     std::cout << "CPU Time  = " << cpu1  - cpu0  << std::endl;
 */
 
-//    whole_data = {{50,0},{25,1},{75,1},{10,6},{49,3},{60,2},{100,5}};
+//    whole_data = {{0,50,0},{1,25,1},{2,75,1},{3,10,6},{4,49,3},{5,60,2},{6,100,5}};
 /**
     Building the Kd-tree using the parsed data.
 */
@@ -70,11 +97,12 @@ int main()
     std::cout<<std::endl<<"Printing Tree..."<<std::endl;
     tree.print_tree(root);
 
+
 /**
     Storing the devoloped tree (serialization) into a file named tree.kd
 */
     std::ofstream fp;
-    fp.open("tree.kd");
+    fp.open("tree.kd", std::ios::binary);
     if (fp.bad())
     {
         puts("Could not open file");
@@ -94,7 +122,7 @@ int main()
     Retrieving the tree (deserialization) from the file stored on disk.
 */
     std::ifstream file_des;
-    file_des.open("tree.kd");
+    file_des.open("tree.kd", std::ios::binary);
     if (file_des.good())
     {
         std::cout<<"Loading the tree from disk"<<std::endl;
@@ -130,7 +158,7 @@ int main()
     data = {7,10,5};
     try
     {
-        if (tree2.check_kdtree(data)) std::cout<<"Given data is unavailable in the tree..."<<std::endl;
+        if (!tree2.check_kdtree(data)) std::cout<<"Given data is unavailable in the tree..."<<std::endl;
         else std::cout<<"Given data is present in the tree. Please use [search_kdtree(data)] to get the details pertaining to the corresponding node."<<std::endl;
     }
     catch (const std::invalid_argument &e)
@@ -142,21 +170,34 @@ int main()
     Parsing from file to extract the data to be queried in the Kd-tree.
 */
     std::ifstream file_query;
-    file_query.open("sample_query.csv");
+    file_query.open("query_data.csv");
     parser <double> (&query_data, &file_query);
     file_query.close();
 
 /**
-    Querying the tree for thr given data
+    Querying the tree for the given data
 */
-    try
+
+    std::ofstream file_op;
+    file_op.open("query_output.txt", std::ios::binary);
+    if (file_op.bad())
     {
-        query_tree(tree2, &query_data);
+        puts("Could not open file");
+        return 0;
     }
-    catch (const std::invalid_argument &e)
+    else
     {
-        std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
+        try
+        {
+            std::cout<<"Stroring the requested data to disk"<<std::endl;
+            query_tree(tree2, &query_data, &file_op);
+        }
+        catch (const std::invalid_argument &e)
+        {
+            std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
+        }
     }
+    file_op.close();
 
     return 0;
 }

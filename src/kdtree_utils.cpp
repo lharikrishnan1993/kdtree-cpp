@@ -20,6 +20,8 @@ node <fd>::node(std::vector <fd> &data, bool level)
     if (level) throw std::invalid_argument( "Error->Duplicate data" );
     else
     {
+        index = data[0];
+        data.erase(data.begin());
         data_point = data;
         collision = level;
     }
@@ -27,10 +29,17 @@ node <fd>::node(std::vector <fd> &data, bool level)
 
 template <class fd>
 node <fd>::~node() {}
+
 template <class fd>
 std::vector <fd> node <fd>::get_data() const
 {
     return this->data_point;
+}
+
+template <class fd>
+fd node <fd>::get_index() const
+{
+    return this->index;
 }
 
 template <class fd>
@@ -51,6 +60,7 @@ void node <fd>::check_point() const
         if (this->right == nullptr) std::cout<<"Right is nullptr"<<std::endl;
     }
 }
+
 template <class fd>
 void node <fd>::print_data() const
 {
@@ -64,7 +74,6 @@ void node <fd>::print_data() const
     }
     std::cout<<") ";
 }
-
 
 template <class fd>
 kdtree <fd>::kdtree() {}
@@ -96,20 +105,20 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, s
     }
 
     fd axis = fmod(depth, data.size());
-    if (data[axis] < subtree->data_point[axis])
+    if (data[axis+1] < subtree->data_point[axis])
     {
         subtree->left = insert_kdtree(data, subtree->left, depth+1, collision);
     }
-    else if (data[axis] > subtree->data_point[axis])
+    else if (data[axis+1] > subtree->data_point[axis])
     {
         subtree->right = insert_kdtree(data, subtree->right, depth+1, collision);
     }
     else
     {
         size_t temp_counter = 0;
-        for (int dim = 0; dim<data.size(); dim++)
+        for (int dim = 1; dim<data.size(); dim++)
         {
-            if (data[dim] == subtree->data_point[dim])
+            if (data[dim] == subtree->data_point[dim-1])
             {
                 temp_counter += 1;
             }
@@ -171,7 +180,7 @@ template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth, double best_dist) const
 {
     if (subtree.get() == nullptr) return nearest;
-
+    //std::cout<<data.size()<<" "<<subtree->data_point.size()<<std::endl;
     double temp_dist = distance(data, subtree->data_point);
     if (temp_dist < best_dist)
     {
@@ -210,6 +219,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <f
     }
 
     typename std::vector<fd>::iterator it;
+    *file << subtree->index << ',';
     for (it=subtree->data_point.begin(); it != subtree->data_point.end();)
     {
         *file << *it;

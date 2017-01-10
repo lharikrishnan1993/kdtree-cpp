@@ -1,0 +1,496 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdftex 2016.12.17)  10 JAN 2017 02:22
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**main_8cpp.tex
+(./main_8cpp.tex
+! Undefined control sequence.
+l.1 \hypertarget
+                {main_8cpp}{}\section{main.\+cpp File Reference}
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.1 \hypertarget{main_
+                      8cpp}{}\section{main.\+cpp File Reference}
+? 
+! Extra }, or forgotten $.
+l.1 \hypertarget{main_8cpp}
+                           {}\section{main.\+cpp File Reference}
+? 
+! Undefined control sequence.
+l.1 \hypertarget{main_8cpp}{}\section
+                                     {main.\+cpp File Reference}
+? 
+! Undefined control sequence.
+l.2 \label
+          {main_8cpp}\index{main.\+cpp@{main.\+cpp}}
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.2 \label{main_
+                8cpp}\index{main.\+cpp@{main.\+cpp}}
+? 
+! Extra }, or forgotten $.
+l.2 \label{main_8cpp}
+                     \index{main.\+cpp@{main.\+cpp}}
+? 
+! Undefined control sequence.
+l.2 \label{main_8cpp}\index
+                           {main.\+cpp@{main.\+cpp}}
+? 
+! Missing \cr inserted.
+<inserted text> 
+                \cr 
+<to be read again> 
+                   }
+l.2 ...l{main_8cpp}\index{main.\+cpp@{main.\+cpp}}
+                                                  
+? 
+! Missing { inserted.
+<inserted text> 
+                {
+<to be read again> 
+                   \cr 
+<to be read again> 
+                   }
+l.2 ...l{main_8cpp}\index{main.\+cpp@{main.\+cpp}}
+                                                  
+? 
+! Undefined control sequence.
+l.8 {\ttfamily
+               \#include \char`\"{}kdtree\+\_\+utils.\+cpp\char`\"{}}\newline
+? 
+! Undefined control sequence.
+l.8 ...}kdtree\+\_\+utils.\+cpp\char`\"{}}\newline
+                                                  
+? 
+! Undefined control sequence.
+l.9 {\ttfamily
+               \#include $<$time.\+h$>$}\newline
+? 
+! Undefined control sequence.
+l.9 {\ttfamily \#include $<$time.\+h$>$}\newline
+                                                
+? 
+! Undefined control sequence.
+l.10 {\ttfamily
+                \#include $<$sys/time.\+h$>$}\newline
+? 
+! Undefined control sequence.
+l.10 ...mily \#include $<$sys/time.\+h$>$}\newline
+                                                  
+? 
+! Undefined control sequence.
+l.11 \subsection
+                *{Functions}
+? 
+! Undefined control sequence.
+l.12 \begin
+           {DoxyCompactItemize}
+? 
+! Missing } inserted.
+<inserted text> 
+                }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.13 \item
+          
+? 
+! Missing \cr inserted.
+<inserted text> 
+                \cr 
+<to be read again> 
+                   }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.13 \item
+          
+? 
+! Missing { inserted.
+<inserted text> 
+                {
+<to be read again> 
+                   \cr 
+<to be read again> 
+                   }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.13 \item
+          
+? 
+! Undefined control sequence.
+<argument> \mbox 
+                 \enspace 
+\llap #1->\hbox to\z@ {\hss #1
+                              }
+\textindent #1->\indent \llap {#1\enspace }
+                                           \ignorespaces 
+l.14 \mbox
+          {\Hypertarget{main_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}\label{m...
+
+? 
+! Undefined control sequence.
+l.14 \mbox{\Hypertarget
+                       {main_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}\label{m...
+
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.14 \mbox{\Hypertarget{main_
+                             8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}\label{m...
+
+? 
+! Extra }, or forgotten $.
+l.14 ...in_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}
+                                                  \label{main_8cpp_ae9530b09...
+
+? 
+! Undefined control sequence.
+l.14 ...p_ae9530b09b27f0c6e5c8836ecbfad493f}\label
+                                                  {main_8cpp_ae9530b09b27f0c...
+
+? 
+! Extra }, or forgotten $.
+l.14 ...n_8cpp_ae9530b09b27f0c6e5c8836ecbfad493f}}
+                                                  
+? 
+! Undefined control sequence.
+l.15 double {\bfseries
+                       get\+\_\+wall\+\_\+time} ()
+? 
+! Missing } inserted.
+<inserted text> 
+                }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.16 \item
+          
+? 
+! Missing \cr inserted.
+<inserted text> 
+                \cr 
+<to be read again> 
+                   }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.16 \item
+          
+? 
+! Missing { inserted.
+<inserted text> 
+                {
+<to be read again> 
+                   \cr 
+<to be read again> 
+                   }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.16 \item
+          
+? 
+! Undefined control sequence.
+<argument> \mbox 
+                 \enspace 
+\llap #1->\hbox to\z@ {\hss #1
+                              }
+\textindent #1->\indent \llap {#1\enspace }
+                                           \ignorespaces 
+l.17 \mbox
+          {\Hypertarget{main_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}\label{m...
+
+? 
+! Undefined control sequence.
+l.17 \mbox{\Hypertarget
+                       {main_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}\label{m...
+
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.17 \mbox{\Hypertarget{main_
+                             8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}\label{m...
+
+? 
+! Extra }, or forgotten $.
+l.17 ...in_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}
+                                                  \label{main_8cpp_acdbcf9be...
+
+? 
+! Undefined control sequence.
+l.17 ...p_acdbcf9be8c879dddacc5aed7d31d7c84}\label
+                                                  {main_8cpp_acdbcf9be8c879d...
+
+? 
+! Extra }, or forgotten $.
+l.17 ...n_8cpp_acdbcf9be8c879dddacc5aed7d31d7c84}}
+                                                  
+? 
+! Undefined control sequence.
+l.18 double {\bfseries
+                       get\+\_\+cpu\+\_\+time} ()
+? 
+! Missing } inserted.
+<inserted text> 
+                }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.19 \item
+          
+? 
+! Missing \cr inserted.
+<inserted text> 
+                \cr 
+<to be read again> 
+                   }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.19 \item
+          
+? 
+! Missing { inserted.
+<inserted text> 
+                {
+<to be read again> 
+                   \cr 
+<to be read again> 
+                   }
+<to be read again> 
+                   \par 
+\item ->\par 
+             \hang \textindent 
+l.19 \item
+          
+? 
+! Undefined control sequence.
+l.20 int \hyperlink
+                   {main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.20 int \hyperlink{main_
+                         8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+? 
+! Extra }, or forgotten $.
+l.20 ...in_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+                                                  {main} ()
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \end 
+l.21 \end
+         {DoxyCompactItemize}
+? 
+! You can't use `\end' in internal vertical mode.
+<recently read> \end 
+                     
+l.21 \end
+         {DoxyCompactItemize}
+? 
+! Undefined control sequence.
+l.24 \subsection
+                {Detailed Description}
+? 
+! Undefined control sequence.
+l.27 \begin
+           {DoxyAuthor}{Author}
+? 
+! You can't use `\end' in internal vertical mode.
+<recently read> \end 
+                     
+l.29 \end
+         {DoxyAuthor}
+? 
+! Undefined control sequence.
+l.30 \begin
+           {DoxyDate}{Date}
+? 
+! You can't use `\end' in internal vertical mode.
+<recently read> \end 
+                     
+l.32 \end
+         {DoxyDate}
+? 
+! Undefined control sequence.
+l.33 \hypertarget
+                 {main_8cpp_Updates}{}\subsection{to make}\label{main_8cpp_U...
+
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.33 \hypertarget{main_
+                       8cpp_Updates}{}\subsection{to make}\label{main_8cpp_U...
+
+? 
+! Extra }, or forgotten $.
+l.33 \hypertarget{main_8cpp_Updates}
+                                    {}\subsection{to make}\label{main_8cpp_U...
+
+? 
+! Undefined control sequence.
+l.33 \hypertarget{main_8cpp_Updates}{}\subsection
+                                                 {to make}\label{main_8cpp_U...
+
+? 
+! Undefined control sequence.
+l.33 ..._8cpp_Updates}{}\subsection{to make}\label
+                                                  {main_8cpp_Updates}
+? 
+! Undefined control sequence.
+l.34 \hypertarget
+                 {main_8cpp_Optimization}{}\subsection{Issues}\label{main_8c...
+
+? 
+! Undefined control sequence.
+l.34 ...arget{main_8cpp_Optimization}{}\subsection
+                                                  {Issues}\label{main_8cpp_O...
+
+? 
+! Undefined control sequence.
+l.34 ...p_Optimization}{}\subsection{Issues}\label
+                                                  {main_8cpp_Optimization}
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.35 
+     
+? 
+
+Overfull \hbox (15.52881pt too wide) in paragraph at lines 32--35
+[]\tenrm DoxyDate main$[]\teni cpp[]pdates[][][][][][][]$ |
+
+\hbox(6.94444+1.94444)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm D
+.\tenrm o
+.\kern-0.27779
+.\tenrm x
+.etc.
+
+! Undefined control sequence.
+l.37 \subsection
+                {Function Documentation}
+? 
+! Undefined control sequence.
+l.38 \mbox
+          {\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{m...
+
+? 
+! Undefined control sequence.
+l.38 \mbox{\Hypertarget
+                       {main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{m...
+
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.38 \mbox{\Hypertarget{main_
+                             8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{m...
+
+? 
+! Extra }, or forgotten $.
+l.38 ...in_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+                                                  \label{main_8cpp_ae66f6b31...
+
+? 
+! Undefined control sequence.
+l.38 ...p_ae66f6b31b5ad750f1fe042a706a4e3d4}\label
+                                                  {main_8cpp_ae66f6b31b5ad75...
+
+? 
+! Extra }, or forgotten $.
+l.38 ...n_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}}
+                                                  
+? 
+! Undefined control sequence.
+l.39 \index
+           {main.\+cpp@{main.\+cpp}!main@{main}}
+? 
+! Missing \cr inserted.
+<inserted text> 
+                \cr 
+<to be read again> 
+                   }
+l.39 \index{main.\+cpp@{main.\+cpp}!main@{main}}
+                                                
+? 
+! Missing { inserted.
+<inserted text> 
+                {
+<to be read again> 
+                   \cr 
+<to be read again> 
+                   }
+l.39 \index{main.\+cpp@{main.\+cpp}!main@{main}}
+                                                
+? 
+! Undefined control sequence.
+l.40 \index
+           {main@{main}!main.\+cpp@{main.\+cpp}}
+? 
+! Missing \cr inserted.
+<inserted text> 
+                \cr 
+<to be read again> 
+                   }
+l.40 \index{main@{main}!main.\+cpp@{main.\+cpp}}
+                                                
+? 
+! Missing { inserted.
+<inserted text> 
+                {
+<to be read again> 
+                   \cr 
+<to be read again> 
+                   }
+l.40 \index{main@{main}!main.\+cpp@{main.\+cpp}}
+                                                
+? 
+! Undefined control sequence.
+l.41 \subsubsection
+                   {\texorpdfstring{main()}{main()}}
+? 
+! Undefined control sequence.
+l.41 \subsubsection{\texorpdfstring
+                                   {main()}{main()}}
+? 
+! Undefined co

@@ -31,17 +31,20 @@ template <class fd>
 class node
 {
     private:
-        std::vector <fd> data_point;
-        std::shared_ptr <node <fd>> left;
-        std::shared_ptr <node <fd>> right;
-        bool collision;
+        std::vector <fd> data_point;        /*!< Detailed description after the member */
+        std::shared_ptr <node <fd>> left;   /*!< Detailed description after the member */
+        std::shared_ptr <node <fd>> right;  /*!< Detailed description after the member */
+        bool collision;                     /*!< Detailed description after the member */
+        fd index;
 
     public:
         node(std::vector <fd> &data, bool level=0);
         ~node();
+        fd get_index() const;
         std::vector <fd> get_data() const;
         void check_point() const;
         void print_data() const;
+
     friend class kdtree <fd>;
 };
 
@@ -49,7 +52,7 @@ template <class fd>
 class kdtree
 {
     private:
-        std::shared_ptr <node <fd>> root;
+        std::shared_ptr <node <fd>> root;   /*!< Detailed description after the member */
 
     public:
         kdtree();
@@ -79,6 +82,7 @@ namespace kdspace
     {
         std::vector <fd> data;
         fd num;
+        static fd counter = 0;
 
         whole_data->clear();
         data.clear();
@@ -90,6 +94,7 @@ namespace kdspace
             data.clear();
             getline(*file, value, '\n');
 
+            data.push_back(counter);
             std::stringstream stream(value);
             while(getline(stream, word, ','))
                 {
@@ -99,6 +104,7 @@ namespace kdspace
                     data.push_back(num);
                 }
             whole_data->push_back(data);
+            counter += 1;
         }
         whole_data->erase(whole_data->end());
         std::cout<<"Parsed"<<std::endl;
@@ -137,7 +143,7 @@ namespace kdspace
         std::vector <fd> temp_vector;
         ranges.clear();
 
-        for (int i = 0; i < (*dataset)[0].size(); i++)
+        for (int i = 1; i < (*dataset)[0].size(); i++)
         {
             temp_vector.clear();
             for (int j = 0; j < dataset->size(); j++)
@@ -200,7 +206,7 @@ namespace kdspace
             return sqrt(sum);
         }
     }
-
+/*
     template <typename fd>
     std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
     {
@@ -217,29 +223,45 @@ namespace kdspace
     }
 
     template <typename fd>
-    void query_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
+    void query_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std::ofstream *file)
     {
-        std::shared_ptr <node <double>> nn;
+        std::shared_ptr <node <fd>> nn;
+        std::vector <fd> data;
         if (dataset->size() == 0) return;
+        *file << "Query Data \t\t\t\t Sample Data \t\t\t Sample Data Index \t Euclidean Distance\n";
 
         typename std::vector<std::vector<fd>>::iterator it;
-        for(it = dataset->begin(); it < dataset->end(); it++)
+        for(it = dataset->begin(); it != dataset->end(); it++)
         {
+            (*it).erase((*it).begin());
             nn = tree.search_kdtree(*it);
             typename std::vector<fd>::iterator itin;
-            std::cout<<"Nearest Neighbor for (";
+            *file<<"(";
             itin = (*it).begin();
             while (itin != (*it).end())
             {
-                std::cout<<*itin;
+                *file<<*itin;
                 itin++;
-                if (itin != (*it).end()) std::cout<<", ";
+                if (itin != (*it).end()) *file<<", ";
             }
-            std::cout<<") is \t";
-            nn->print_data();
-            std::cout<<": "<<kdspace::distance(nn->get_data(), *it)<<std::endl;
+            *file<<")\t";
+
+            data.clear();
+            data = nn->get_data();
+            *file <<"\t(";
+            itin = data.begin();
+            while (itin != data.end())
+            {
+                *file<<*itin;
+                itin++;
+                if (itin != data.end()) *file<<", ";
+            }
+            *file <<")\t";
+
+            *file<<nn->get_index()<<", "<<kdspace::distance(nn->get_data(), *it)<<'\n';
         }
     }
+*/
 }
 
 #endif
