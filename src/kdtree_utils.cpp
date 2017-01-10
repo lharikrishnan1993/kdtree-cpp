@@ -105,7 +105,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, s
 {
     if (subtree.get() == nullptr)
     {
-        std::shared_ptr<node <fd>> subtree = std::make_shared<node <fd>> (data, collision);
+        std::shared_ptr<node <fd>> subtree = std::make_shared <node <fd>> (data, collision);
         return subtree;
     }
 

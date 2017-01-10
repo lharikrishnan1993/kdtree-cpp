@@ -108,7 +108,7 @@ class median_data
         std::vector<std::vector <double>> data_right;
 };
 
-void get_median(median_data *median_details, std::vector<std::vector<double>> *dataset)
+void get_median(std::shared_ptr <median_data> median_details, std::vector<std::vector<double>> *dataset)
 {
     int axis = 0;
     get_split_axis(&axis, dataset);
@@ -134,15 +134,15 @@ void get_median(median_data *median_details, std::vector<std::vector<double>> *d
     }
 }
 
-std::shared_ptr <node <double> > build_tree(kdtree <double> &tree, std::vector<std::vector<double>> *dataset)
+std::shared_ptr <node <double>> build_tree(kdtree <double> &tree, std::vector<std::vector<double>> *dataset)
 {
-    std::shared_ptr <node <double>> root;
+    std::shared_ptr <node <double>> build_tree_root;
 
-    if (dataset->size() == 0) return root;
+    if (dataset->size() == 0) return build_tree_root;
 
-    median_data *details = new median_data;
+    std::shared_ptr <median_data> details = std::make_shared <median_data> ();
     get_median(details, dataset);
-    root = grow_kdtree(&tree, details->data);
+    build_tree_root = grow_kdtree(&tree, details->data);
     build_tree(tree, &details->data_left);
     build_tree(tree, &details->data_right);
 }
@@ -175,22 +175,24 @@ int main()
 /*
     double wall0 = get_wall_time();
     double cpu0  = get_cpu_time();
-*/
+
     std::ifstream file;
-    file.open("sample_data.csv");
+    file.open("sample.csv");
     parser <double> (&whole_data, &file);
     file.close();
-/*
+
     double wall1 = get_wall_time();
     double cpu1  = get_cpu_time();
 
     std::cout << "Wall Time = " << wall1 - wall0 << std::endl;
     std::cout << "CPU Time  = " << cpu1  - cpu0  << std::endl;
 */
+
+    whole_data = {{5,10},{6,11},{7,12},{8,13},{9,14},{10,15},{11,16}};
     root = build_tree(tree, &whole_data);
 
-//    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
-//    tree.print_tree(root);
+    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
+    tree.print_tree(root);
 
     std::ofstream fp;
     fp.open("tree.kd");
@@ -219,10 +221,10 @@ int main()
     }
 
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {51,5,25};
+    data = {51,5,5};
     try
     {
-        nn = tree2.search_kdtree(data);
+        nn = tree.search_kdtree(data);
         nn->print_data();
         std::cout<<": "<<distance(nn->get_data(), data)<<std::endl;
     }
