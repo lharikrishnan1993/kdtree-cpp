@@ -6,7 +6,7 @@
 *    @brief Uber Coding Assignment, Kd Tree Implementation in C++.
 *
 *    @section Updates to make
-*       1) Provide facility to change the axis split and position split in run time.
+*       1) Provide facility to change the axis split and position split in
 *
 *    @section Optimization Issues
 *
@@ -82,11 +82,13 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data)
 }
 
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth, bool collision)
+std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, \
+std::shared_ptr <node <fd>> subtree, size_t depth, bool collision)
 {
     if (subtree.get() == nullptr)
     {
-        std::shared_ptr<node <fd>> subtree = std::make_shared <node <fd>> (data, collision);
+        std::shared_ptr<node <fd>> subtree = \
+        std::make_shared <node <fd>> (data, collision);
         return subtree;
     }
 
@@ -97,7 +99,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, s
     }
     else if (data[axis] > subtree->data_point[axis])
     {
-        subtree->right = insert_kdtree(data, subtree->right, depth+1, collision);
+        subtree->right = insert_kdtree(data, subtree->right, depth+1,collision);
     }
     else
     {
@@ -110,17 +112,19 @@ std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data, s
             }
         }
         if (temp_counter == data.size()) collision += 1;
-        subtree->right = insert_kdtree(data, subtree->right, depth+1, collision);
+        subtree->right = insert_kdtree(data, subtree->right, depth+1,collision);
     }
     return subtree;
 }
 
 template <class fd>
-double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2) const
+double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2) \
+const
 {
     if (data1.size() != data2.size())
     {
-        throw std::invalid_argument("Error->Incompatible dimensions. Wrong data.");
+        throw std::invalid_argument("Error->Incompatible dimensions. \
+        Wrong data.");
     }
     else
     {
@@ -141,7 +145,8 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data) const
 }
 
 template <class fd>
-bool kdtree <fd>::check_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth) const
+bool kdtree <fd>::check_kdtree(std::vector <fd> &data, std::shared_ptr \
+<node <fd>> subtree, size_t depth) const
 {
     if (subtree.get() == nullptr) return false;
 
@@ -156,14 +161,17 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd
 }
 
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data) const
+std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data) \
+const
 {
     if (root.get() == nullptr) return root;
     else return search_kdtree(data, root, root);
 }
 
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth, double best_dist) const
+std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, \
+std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, \
+size_t depth, double best_dist) const
 {
     if (subtree.get() == nullptr) return nearest;
 
@@ -180,24 +188,27 @@ std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, s
     if (data[axis] < subtree->data_point[axis])
     {
         search_left = true;
-        nearest = search_kdtree(data, subtree->left, nearest, depth+1, best_dist);
+        nearest = search_kdtree(data, subtree->left, nearest,depth+1,best_dist);
     }
     else
     {
         search_left = false;
-        nearest = search_kdtree(data, subtree->right, nearest, depth+1, best_dist);
+        nearest = search_kdtree(data, subtree->right,nearest,depth+1,best_dist);
     }
 
     if (abs(data[axis] - subtree->data_point[axis]) <= sqrt(best_dist))
     {
-        if (search_left) nearest = search_kdtree(data, subtree->right, nearest, depth+1, best_dist);
-        else nearest = search_kdtree(data, subtree->left, nearest, depth+1, best_dist);
+        if (search_left) nearest = search_kdtree(data, subtree->right, \
+          nearest, depth+1, best_dist);
+        else nearest = search_kdtree(data, subtree->left, nearest, depth+1, \
+          best_dist);
     }
     return nearest;
 }
 
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <fd>> subtree, std::ofstream *file) const
+std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr \
+  <node <fd>> subtree, std::ofstream *file) const
 {
     if (subtree.get() == nullptr)
     {
@@ -218,7 +229,8 @@ std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <f
 }
 
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::shared_ptr <node <fd>> subtree, std::ifstream *file)
+std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::shared_ptr \
+  <node <fd>> subtree, std::ifstream *file)
 {
     std::vector<fd> data;
     std::string value, word, whole_data;

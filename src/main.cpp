@@ -60,7 +60,8 @@ void parser(std::vector<std::vector<fd>> *whole_data, std::ifstream *file)
 }
 
 template <typename fd>
-std::shared_ptr <node <fd> > grow_kdtree(kdtree <fd> *tree, std::vector <fd> &data)
+std::shared_ptr <node <fd> > grow_kdtree(kdtree <fd> *tree, std::vector <fd> \
+&data)
 {
     std::shared_ptr <node <fd>> head;
     static bool root_locater = 0;
@@ -97,7 +98,8 @@ void get_split_axis(int *axis, std::vector<std::vector<fd>> *dataset)
         temp_vector.clear();
         for (int j = 0; j < dataset->size(); j++)
             temp_vector.push_back((*dataset)[j][i]);
-        ranges[*std::max_element(temp_vector.begin(), temp_vector.end()) - *std::min_element(temp_vector.begin(), temp_vector.end())] = i;
+        ranges[*std::max_element(temp_vector.begin(), temp_vector.end()) - \
+        *std::min_element(temp_vector.begin(), temp_vector.end())] = i;
     }
     *axis = ranges.rbegin()->second;
 }
@@ -112,7 +114,8 @@ class median_data
 };
 
 template <typename fd>
-void get_median(std::shared_ptr <median_data <fd> > median_details, std::vector<std::vector<fd>> *dataset)
+void get_median(std::shared_ptr <median_data <fd> > median_details, \
+std::vector<std::vector<fd>> *dataset)
 {
     int axis = 0;
     get_split_axis(&axis, dataset);
@@ -120,7 +123,8 @@ void get_median(std::shared_ptr <median_data <fd> > median_details, std::vector<
     median_details->data_right.clear();
     median_details->data.clear();
 
-    std::sort(dataset->begin(), dataset->end(), [axis](const std::vector <fd> &a, const std::vector <fd> &b)
+    std::sort(dataset->begin(), dataset->end(), [axis](const std::vector \
+    <fd> &a, const std::vector <fd> &b)
         { return  a.at(axis) < b.at(axis); });
 
     int median_index = 0;
@@ -139,13 +143,15 @@ void get_median(std::shared_ptr <median_data <fd> > median_details, std::vector<
 }
 
 template <typename fd>
-std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
+std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, \
+std::vector<std::vector<fd>> *dataset)
 {
     std::shared_ptr <node <fd>> build_tree_root;
 
     if (dataset->size() == 0) return build_tree_root;
 
-    std::shared_ptr <median_data <fd> > details = std::make_shared <median_data <fd>> ();
+    std::shared_ptr <median_data <fd> > details = std::make_shared \
+    <median_data <fd>> ();
     get_median(details, dataset);
     build_tree_root = grow_kdtree(&tree, details->data);
     build_tree(tree, &details->data_left);
@@ -158,7 +164,8 @@ double distance(const std::vector <fd> &data1, std::vector <fd> &data2)
 {
     if (data1.size() != data2.size())
     {
-        throw std::invalid_argument("Error->Incompatible dimensions. Wrong data.");
+        throw std::invalid_argument("Error->Incompatible dimensions. Wrong\
+        data.");
     }
     else
     {
@@ -239,7 +246,8 @@ int main()
     }
     catch (const std::invalid_argument& e )
     {
-        std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
+        std::cout<<"Given data is of incompatible dimensions with provided \
+        tree/data dimensions..."<<std::endl;
     }
 
     data.clear();
