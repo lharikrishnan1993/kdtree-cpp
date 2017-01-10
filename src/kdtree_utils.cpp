@@ -151,18 +151,18 @@ double kdtree <fd>::distance(std::vector <fd> &data1, std::vector <fd> &data2) c
         return sum;
     }
 }
-/*
+
 template <class fd>
 bool kdtree <fd>::check_kdtree(std::vector <fd> &data)
 {
-    if (root == nullptr) return root;
+    if (root.get() == nullptr) return false;
     else return check_kdtree(data, root);
 }
 
 template <class fd>
-bool kdtree <fd>::check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_t depth)
+bool kdtree <fd>::check_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth)
 {
-    if (subtree == nullptr) return false;
+    if (subtree.get() == nullptr) return false;
 
     if (distance(data, subtree->data_point) == 0) return true;
 
@@ -173,7 +173,7 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data, node <fd> *subtree, size_
     }
     return check_kdtree(data, subtree->right, depth+1);
 }
-*/
+
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data)
 {

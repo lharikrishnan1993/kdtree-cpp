@@ -230,7 +230,7 @@ int main()
     data = {51,5};
     try
     {
-            nn = tree2.search_kdtree(data);
+        nn = tree2.search_kdtree(data);
         nn->print_data();
         std::cout<<": "<<distance(nn->get_data(), data)<<std::endl;
     }
@@ -238,6 +238,10 @@ int main()
     {
         std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
     }
+
+    data.clear();
+    data = {7,10};
+    std::cout<<tree2.check_kdtree(data)<<std::endl;
 
     return 0;
 }
