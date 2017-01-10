@@ -194,7 +194,7 @@ int main()
     std::cout << "CPU Time  = " << cpu1  - cpu0  << std::endl;
 */
 
-    whole_data = {{5,10},{6,11},{7,12},{8,13},{9,14},{10,15},{11,16}};
+    whole_data = {{50,0},{25,1},{75,1},{10,6},{49,3},{60,2},{100,5}};
     root = build_tree(tree, &whole_data);
 
     std::cout<<std::endl<<"Printing Tree..."<<std::endl;
@@ -224,13 +224,16 @@ int main()
     {
         std::cout<<"Loading the tree from disk"<<std::endl;
         root2 = tree2.deserialize_tree(root2, &fil);
-        }
+    }
+
+    std::cout<<std::endl<<"Printing Tree2..."<<std::endl;
+    tree2.print_tree(root2);
 
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
-    data = {51,5};
+    data = {51,3};
     try
     {
-        nn = tree2.search_kdtree(data);
+        nn = tree.search_kdtree(data);
         nn->print_data();
         std::cout<<": "<<distance(nn->get_data(), data)<<std::endl;
     }

@@ -13,7 +13,7 @@
 */
 
 #include "kdtree.h"
-bool search_left = true;
+//bool search_left = true;
 
 template <class fd>
 node <fd>::node(std::vector <fd> &data, bool level)
@@ -194,6 +194,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, s
     }
 
     fd axis = fmod(depth, data.size());
+    bool search_left = false;
 
     if (data[axis] < subtree->data_point[axis])
     {
@@ -206,10 +207,10 @@ std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, s
         nearest = search_kdtree(data, subtree->right, nearest, depth+1, best_dist);
     }
 
-    if (abs(data[axis] - subtree->data_point[axis]) < best_dist)
+    if (abs(data[axis] - subtree->data_point[axis]) <= sqrt(best_dist))
     {
-        if (search_left) nearest = search_kdtree(data, subtree->right, nearest, depth, best_dist);
-        else nearest = search_kdtree(data, subtree->left, nearest, depth, best_dist);
+        if (search_left) nearest = search_kdtree(data, subtree->right, nearest, depth+1, best_dist);
+        else nearest = search_kdtree(data, subtree->left, nearest, depth+1, best_dist);
     }
     return nearest;
 }
