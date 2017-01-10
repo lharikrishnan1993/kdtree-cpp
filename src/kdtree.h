@@ -86,7 +86,7 @@ namespace kdspace
     {
         std::vector <fd> data;
         fd num;
-        static fd counter = 0;
+        fd counter = 0;
 
         whole_data->clear();
         data.clear();

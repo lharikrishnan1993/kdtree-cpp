@@ -10,18 +10,6 @@
 #include <time.h>
 #include <sys/time.h>
 
-double get_wall_time(){
-    struct timeval time;
-    if (gettimeofday(&time,NULL)){
-        return 0;
-    }
-    return (double)time.tv_sec + (double)time.tv_usec * .000001;
-}
-
-double get_cpu_time(){
-    return (double)clock() / CLOCKS_PER_SEC;
-}
-
 using namespace kdspace;
 /**
 *   @param The tree into which it is to be stored, and the data to be stored.
@@ -62,7 +50,8 @@ void query_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std:
     if (dataset->size() == 0) return;
 
     typename std::vector<std::vector<fd>>::iterator it;
-    for(it = dataset->begin(); it != dataset->end(); it++)
+
+    for(it = dataset->begin(); it < dataset->end(); it++)
     {
         (*it).erase((*it).begin());
         nn = tree.search_kdtree(*it);
@@ -70,119 +59,311 @@ void query_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std:
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::vector <double> data;
-    std::vector<std::vector<double>> whole_data;
-    std::vector<std::vector<double>> query_data;
+    if (argc == 1)
+    {
+        std::vector <double> data;
+        std::vector<std::vector<double>> whole_data;
+        std::vector<std::vector<double>> query_data;
+        whole_data.clear();
+        query_data.clear();
+        kdtree <double> tree;
+        std::shared_ptr <node <double>> root;
+        kdtree <double> tree2;
+        std::shared_ptr <node <double>> root2;
 
-    kdtree <double> tree;
-    std::shared_ptr <node <double>> nn;
-    std::shared_ptr <node <double>> root;
+        /**
+        Parsing from file to extract the data to be inserted in the Kd-tree.
+        */
+        try
+        {
+            std::ifstream file;
+            file.open("../src/data/sample_data.csv");
+            if (!file) throw std::runtime_error("Could not open file");
+            else
+            {
+                std::cout<<"Parsing the 'sample_data.csv' file..."<<std::endl;
+                parser <double> (&whole_data, &file);
+                file.close();
+            }
+        }
+        catch (const std::runtime_error& e)
+        {
+            std::cout<<e.what()<<std::endl;
+            return 0;
+        }
+
+        /**
+            Building the Kd-tree using the parsed data.
+        */
+            std::cout<<"Building the Kd tree..."<<std::endl;
+            root = build_kdtree(tree, &whole_data);
+
+
+        /**
+            Storing the devoloped tree (serialization) into a file named tree.kd
+        */
+        try
+        {
+            std::ofstream fp;
+            fp.open("../src/data/tree.kd", std::ios::binary);
+            if (!fp) throw std::runtime_error("Could not open file");
+            else
+            {
+                std::cout<<"Stroring the tree to disk as 'tree.kd'."<<std::endl;
+                tree.serialize_tree(root, &fp);
+            }
+            fp << '/';
+            fp.close();
+        }
+        catch (const std::runtime_error& e)
+        {
+            std::cout<<e.what()<<std::endl;
+            return 0;
+        }
+
+        /**
+            Retrieving the tree (deserialization) from the file stored on disk.
+        */
+        try
+        {
+            std::ifstream file_des;
+            file_des.open("../src/data/tree.kd", std::ios::binary);
+            if (!file_des) throw std::runtime_error("Could not open file");
+            else
+            {
+                std::cout<<"Loading the tree from the serialized file 'tree.kd'."<<std::endl;
+                root2 = tree2.deserialize_tree(&file_des);
+            }
+        }
+        catch (const std::runtime_error& e)
+        {
+            std::cout<<e.what()<<std::endl;
+            return 0;
+        }
+
+        /**
+            Parsing from file to extract the data to be queried in the Kd-tree.
+        */
+        try
+        {
+            std::ifstream file_query;
+            file_query.open("../src/data/query_data.csv");
+            if (!file_query) throw std::runtime_error("Could not open file");
+            else
+            {
+                std::cout<<"Parsing the 'query_data.csv' file..."<<std::endl;
+                parser <double> (&query_data, &file_query);
+                file_query.close();
+            }
+        }
+        catch (const std::runtime_error& e)
+        {
+            std::cout<<e.what()<<std::endl;
+            return 0;
+        }
+
+        /**
+            Querying the tree for the given data
+        */
+
+        try
+        {
+            std::ofstream file_op;
+            file_op.open("../src/data/output.txt", std::ios::binary);
+            if (!file_op) std::runtime_error("Could not open file");
+            else
+            {
+                try
+                {
+                    std::cout<<"Querying to get index and Euclidean distance and stroring the requested data to disk at 'output.txt'."<<std::endl;
+                    query_kdtree(tree2, &query_data, &file_op);
+                }
+                catch (const std::invalid_argument &e)
+                {
+                    std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
+                }
+            }
+            file_op.close();
+        }
+        catch (const std::runtime_error& e)
+        {
+            std::cout<<e.what()<<std::endl;
+            return 0;
+        }
+    }
+    else
+    {
+    /**
+    User command based. Only two are currently available. '-b' to build and '-d' to deserialize a given .kd file.
+    Both of them query and store the file in the requested format with euclidean distance and the index.
+    */
+        int i = 1;
+        while (i<argc)
+        {
+            std::vector<std::vector<double>> whole_data;
+            std::vector<std::vector<double>> query_data;
+            whole_data.clear();
+            query_data.clear();
+            kdtree <double> tree;
+            std::shared_ptr <node <double>> root;
+
+            std::string file_folder = "../src/";
+            if (std::string(argv[i]) == "-b")
+            {
+                /**
+                Parsing from file to extract the data to be inserted in the Kd-tree.
+                */
+                try
+                {
+                    std::ifstream file;
+                    file.open(file_folder+=argv[i+1]);
+                    if (!file) throw std::runtime_error("Could not open file");
+                    else
+                    {
+                        std::cout<<"Parsing the given file..."<<std::endl;
+                        parser <double> (&whole_data, &file);
+                        file.close();
+                    }
+                }
+                catch (const std::runtime_error& e)
+                {
+                    std::cout<<e.what()<<std::endl;
+                    return 0;
+                }
+
+                /**
+                    Building the Kd-tree using the parsed data.
+                */
+                std::cout<<"Building the Kd tree..."<<std::endl;
+                root = build_kdtree(tree, &whole_data);
+
+                try
+                {
+                    std::ifstream file_query;
+                    file_query.open("../src/data/query_data.csv");
+                    if (!file_query) throw std::runtime_error("Could not open file");
+                    else
+                    {
+                        std::cout<<"Parsing the 'query_data.csv' file..."<<std::endl;
+                        parser <double> (&query_data, &file_query);
+                        file_query.close();
+                    }
+                }
+                catch (const std::runtime_error& e)
+                {
+                    std::cout<<e.what()<<std::endl;
+                    return 0;
+                }
+
+                /**
+                    Querying the tree for the given data
+                */
+
+                try
+                {
+                    std::ofstream file_op;
+                    file_op.open("../src/data/output.txt", std::ios::binary);
+                    if (!file_op) std::runtime_error("Could not open file");
+                    else
+                    {
+                        try
+                        {
+                            std::cout<<"Querying to get index and Euclidean distance and stroring the requested data to disk at 'output.txt'."<<std::endl;
+                            query_kdtree(tree, &query_data, &file_op);
+                        }
+                        catch (const std::invalid_argument &e)
+                        {
+                            std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
+                        }
+                    }
+                    file_op.close();
+                }
+                catch (const std::runtime_error& e)
+                {
+                    std::cout<<e.what()<<std::endl;
+                    return 0;
+                }
+            }
+            else if (std::string(argv[i]) == "-d")
+            {
+                try
+                {
+                    std::ifstream file_des;
+                    file_des.open(file_folder+=argv[i+1], std::ios::binary);
+                    if (!file_des) throw std::runtime_error("Could not open file");
+                    else
+                    {
+                        std::cout<<"Loading the tree from the given serialized file."<<std::endl;
+                        root = tree.deserialize_tree(&file_des);
+                    }
+                }
+                    catch (const std::runtime_error& e)
+                {
+                    std::cout<<e.what()<<std::endl;
+                    return 0;
+                }
+
+                try
+                {
+                    std::ifstream file_query;
+                    file_query.open("../src/data/query_data.csv");
+                    if (!file_query) throw std::runtime_error("Could not open file");
+                    else
+                    {
+                        std::cout<<"Parsing the 'query_data.csv' file..."<<std::endl;
+                        parser <double> (&query_data, &file_query);
+                        file_query.close();
+                    }
+                }
+                catch (const std::runtime_error& e)
+                {
+                    std::cout<<e.what()<<std::endl;
+                    return 0;
+                }
+
+                /**
+                    Querying the tree for the given data
+                */
+
+                try
+                {
+                    std::ofstream file_op;
+                    file_op.open("../src/data/output.txt", std::ios::binary);
+                    if (!file_op) std::runtime_error("Could not open file");
+                    else
+                    {
+                        try
+                        {
+                            std::cout<<"Querying to get index and Euclidean distance and stroring the requested data to disk at 'output.txt'."<<std::endl;
+                            query_kdtree(tree, &query_data, &file_op);
+                        }
+                        catch (const std::invalid_argument &e)
+                        {
+                            std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
+                        }
+                    }
+                    file_op.close();
+                }
+                catch (const std::runtime_error& e)
+                {
+                    std::cout<<e.what()<<std::endl;
+                    return 0;
+                }
+            }
+            i++;
+        }
+    }
+
 /*
-    double wall0 = get_wall_time();
-    double cpu0  = get_cpu_time();
-*/
+//    Searching the tree to get the nearest neighbor and the corresponding euclidean distance.
 
-/**
-    Parsing from file to extract the data to be inserted in the Kd-tree.
-*/
-    try
-    {
-        std::ifstream file;
-        file.open("../src/data/sample_data.csv");
-        if (!file) throw std::runtime_error("Could not open file");
-        else
-        {
-            parser <double> (&whole_data, &file);
-            file.close();
-        }
-    }
-    catch (const std::runtime_error& e)
-    {
-        std::cout<<e.what()<<std::endl;
-        return 0;
-    }
-/*
-    double wall1 = get_wall_time();
-    double cpu1  = get_cpu_time();
-
-    std::cout << "Wall Time = " << wall1 - wall0 << std::endl;
-    std::cout << "CPU Time  = " << cpu1  - cpu0  << std::endl;
-*/
-
-//    whole_data = {{0,50,0},{1,25,1},{2,75,1},{3,10,6},{4,49,3},{5,60,2},{6,100,5}};
-/**
-    Building the Kd-tree using the parsed data.
-*/
-    root = build_kdtree(tree, &whole_data);
-
-/**
-    Printing the tree devoloped using the parsed data.
-*/
-    std::cout<<std::endl<<"Printing Tree..."<<std::endl;
-    tree.print_tree(root);
-
-
-/**
-    Storing the devoloped tree (serialization) into a file named tree.kd
-*/
-
-    try
-    {
-        std::ofstream fp;
-        fp.open("../src/data/tree.kd", std::ios::binary);
-        if (!fp) throw std::runtime_error("Could not open file");
-        else
-        {
-            std::cout<<"Stroring the tree to disk"<<std::endl;
-            tree.serialize_tree(root, &fp);
-        }
-        fp << '/';
-        fp.close();
-    }
-    catch (const std::runtime_error& e)
-    {
-        std::cout<<e.what()<<std::endl;
-        return 0;
-    }
-
-    kdtree <double> tree2;
-    std::shared_ptr <node <double>> root2;
-/**
-    Retrieving the tree (deserialization) from the file stored on disk.
-*/
-    try
-    {
-        std::ifstream file_des;
-        file_des.open("../src/data/tree.kd", std::ios::binary);
-        if (!file_des) throw std::runtime_error("Could not open file");
-        else
-        {
-            std::cout<<"Loading the tree from disk"<<std::endl;
-            root2 = tree2.deserialize_tree(&file_des);
-        }
-    }
-    catch (const std::runtime_error& e)
-    {
-        std::cout<<e.what()<<std::endl;
-        return 0;
-    }
-
-/**
-    Printing the tree devoloped using the stored file, 'tree.kd'.
-*/
-    std::cout<<std::endl<<"Printing Tree2..."<<std::endl;
-    tree2.print_tree(root2);
-
-/**
-    Searching the tree to get the nearest neighbor and the corresponding euclidean distance.
-*/
     std::cout<<std::endl<<"Searching Tree..."<<std::endl;
     data = {51,3,5};
     try
     {
-        nn = tree.search_kdtree(data);
+        nn = tree2.search_kdtree(data);
         nn->print_data();
         std::cout<<": "<<distance(nn->get_data(), data)<<std::endl;
     }
@@ -191,9 +372,9 @@ int main()
         std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
     }
 
-/**
-    Checking if the given data exists in the tree.
-*/
+
+//    Checking if the given data exists in the tree.
+
     data.clear();
     data = {7,10,5};
     try
@@ -205,55 +386,7 @@ int main()
     {
         std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
     }
-
-/**
-    Parsing from file to extract the data to be queried in the Kd-tree.
 */
-    try
-    {
-        std::ifstream file_query;
-        file_query.open("../src/data/query_data.csv");
-        if (!file_query) throw std::runtime_error("Could not open file");
-        else
-        {
-            parser <double> (&query_data, &file_query);
-            file_query.close();
-        }
-    }
-    catch (const std::runtime_error& e)
-    {
-        std::cout<<e.what()<<std::endl;
-        return 0;
-    }
-
-/**
-    Querying the tree for the given data
-*/
-
-    try
-    {
-        std::ofstream file_op;
-        file_op.open("../src/data/query_output.txt", std::ios::binary);
-        if (!file_op) std::runtime_error("Could not open file");
-        else
-        {
-            try
-            {
-                std::cout<<"Stroring the requested data to disk"<<std::endl;
-                query_kdtree(tree2, &query_data, &file_op);
-            }
-            catch (const std::invalid_argument &e)
-            {
-                std::cout<<"Given data is of incompatible dimensions with provided tree/data dimensions..."<<std::endl;
-            }
-        }
-        file_op.close();
-    }
-    catch (const std::runtime_error& e)
-    {
-        std::cout<<e.what()<<std::endl;
-        return 0;
-    }
-
+    std::cout<<"Done!"<<std::endl;
     return 0;
 }
