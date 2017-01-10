@@ -25,7 +25,7 @@ double get_cpu_time(){
 using namespace kdspace;
 
 template <typename fd>
-std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
+std::shared_ptr <node <fd>> build_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
 {
     std::shared_ptr <node <fd>> build_tree_root;
 
@@ -41,13 +41,13 @@ std::shared_ptr <node <fd>> build_tree(kdtree <fd> &tree, std::vector<std::vecto
         std::cout<<e.what()<<std::endl;
     }
     build_tree_root = grow_kdtree(&tree, details->data);
-    build_tree(tree, &details->data_left);
-    build_tree(tree, &details->data_right);
+    build_kdtree(tree, &details->data_left);
+    build_kdtree(tree, &details->data_right);
     return build_tree_root;
 }
 
 template <typename fd>
-void query_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std::ofstream *file)
+void query_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std::ofstream *file)
 {
     std::shared_ptr <node <fd>> nn;
     std::vector <fd> data;
@@ -80,7 +80,7 @@ int main()
     Parsing from file to extract the data to be inserted in the Kd-tree.
 */
     std::ifstream file;
-    file.open("sample_data.csv");
+    file.open("../src/data/sample_data.csv");
     parser <double> (&whole_data, &file);
     file.close();
 
@@ -96,7 +96,7 @@ int main()
 /**
     Building the Kd-tree using the parsed data.
 */
-    root = build_tree(tree, &whole_data);
+    root = build_kdtree(tree, &whole_data);
 
 /**
     Printing the tree devoloped using the parsed data.
@@ -109,7 +109,7 @@ int main()
     Storing the devoloped tree (serialization) into a file named tree.kd
 */
     std::ofstream fp;
-    fp.open("tree.kd", std::ios::binary);
+    fp.open("../src/data/tree.kd", std::ios::binary);
     if (fp.bad())
     {
         puts("Could not open file");
@@ -129,7 +129,7 @@ int main()
     Retrieving the tree (deserialization) from the file stored on disk.
 */
     std::ifstream file_des;
-    file_des.open("tree.kd", std::ios::binary);
+    file_des.open("../src/data/tree.kd", std::ios::binary);
     if (file_des.good())
     {
         std::cout<<"Loading the tree from disk"<<std::endl;
@@ -177,16 +177,16 @@ int main()
     Parsing from file to extract the data to be queried in the Kd-tree.
 */
     std::ifstream file_query;
-    file_query.open("query_data.csv");
+    file_query.open("../src/data/query_data.csv");
     parser <double> (&query_data, &file_query);
     file_query.close();
 
 /**
     Querying the tree for the given data
 */
-/*
+
     std::ofstream file_op;
-    file_op.open("query_output.txt", std::ios::binary);
+    file_op.open("../src/data/query_output.txt", std::ios::binary);
     if (file_op.bad())
     {
         puts("Could not open file");
@@ -197,7 +197,7 @@ int main()
         try
         {
             std::cout<<"Stroring the requested data to disk"<<std::endl;
-            query_tree(tree2, &query_data, &file_op);
+            query_kdtree(tree2, &query_data, &file_op);
         }
         catch (const std::invalid_argument &e)
         {
@@ -205,6 +205,6 @@ int main()
         }
     }
     file_op.close();
-*/
+
     return 0;
 }
