@@ -23,7 +23,11 @@ double get_cpu_time(){
 }
 
 using namespace kdspace;
-
+/**
+*   @param The tree into which it is to be stored, and the data to be stored.
+*   @return The root of the tree so that it can be used to manipulate the tree as and when required.
+*   @brief The build_kdtree function as asked in the question paper.
+*/
 template <typename fd>
 std::shared_ptr <node <fd>> build_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
 {
@@ -45,7 +49,11 @@ std::shared_ptr <node <fd>> build_kdtree(kdtree <fd> &tree, std::vector<std::vec
     build_kdtree(tree, &details->data_right);
     return build_tree_root;
 }
-
+/**
+*   @param The file into which the nearest neighbors distance and the index in the sample input is to be stored, and the data to be queried.
+*   @return None. The file is updated and hence can be accessed where it is required.
+*   @brief The query_kdtree function as asked in the question paper. The output as required in the question paper has been created as .txt file.
+*/
 template <typename fd>
 void query_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std::ofstream *file)
 {
