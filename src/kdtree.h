@@ -34,7 +34,7 @@ class node
         fd index;                           /*!< Index of the data (associated with this node) in the input file */
 
     public:
-        node(std::vector <fd> &data, bool level=0);     /*!< Constructor. Identifies the index from data and updates both of them. If collision is true, it is rejected as duplicate data. */
+        node(const std::vector <fd> &data, bool level=0);     /*!< Constructor. Identifies the index from data and updates both of them. If collision is true, it is rejected as duplicate data. */
         ~node();                            /*!< Destructor. All are smart pointers or stack variables and hence will get destroyed automatically */
         fd get_index() const;               /*!< Returns the index in the input file for the concerned node data */
         std::vector <fd> get_data() const;  /*!< Returns the data so as to process it later. */
@@ -54,16 +54,16 @@ class kdtree
         kdtree();                           /*!< Constructor. Creates a tree. */
         ~kdtree();                          /*!< Destructor. All are smart pointers and hence will get destroyed automatically */
 
-        void insert_kdtree(std::vector <fd> &data);
-        std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0, bool collsion_level=0);
+        void insert_kdtree(const std::vector <fd> &data);
+        std::shared_ptr <node <fd>> insert_kdtree(const std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0, bool collsion_level=0) const;
 
-        double distance(std::vector <fd> &data1, std::vector <fd> &data2) const;
+        double distance(const std::vector <fd> &data1, const std::vector <fd> &data2) const;
 
-        bool check_kdtree(std::vector <fd> &data) const;
-        bool check_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0) const;
+        bool check_kdtree(const std::vector <fd> &data) const;
+        bool check_kdtree(const std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0) const;
 
-        std::shared_ptr <node <fd>> search_kdtree(std::vector <fd> &data) const;
-        std::shared_ptr <node <fd>> search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity()) const;
+        std::shared_ptr <node <fd>> search_kdtree(const std::vector <fd> &data) const;
+        std::shared_ptr <node <fd>> search_kdtree(const std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity()) const;
 
         std::shared_ptr <node <fd>> serialize_tree(std::ofstream *file, std::shared_ptr <node <fd>> subtree=nullptr) const;
         void deserialize_tree(std::ifstream *file);
@@ -80,7 +80,7 @@ namespace kdspace
     bool print_flag = false;            /*!< Flag to avoid seg faults when repeatedly printed and to actovate calls from root with no parameters*/
 /**
 *   @param A holder of type vector of vector into which the parsed data will be filled. A file which holds the data to be parsed.
-*   @return Values were filled into the concerned containersa and hence does not return anything.
+*   @return Values were filled into the concerned containers a and hence does not return anything.
 *   @brief Clears the containers, and later, using stringstream the data in the file is parsed and then pushed back into the vector.
 */
     template <typename fd>
@@ -148,7 +148,7 @@ namespace kdspace
 */
 
     template <typename fd>
-    void get_split_axis(int *axis, std::vector<std::vector<fd>> *dataset, const size_t val=0, const size_t depth=0)
+    void get_split_axis(int *axis, const std::vector<std::vector<fd>> *dataset, const size_t val=0, const size_t depth=0)
     {
         std::map<fd, int> ranges;
         std::vector <fd> temp_vector;
@@ -230,7 +230,7 @@ namespace kdspace
 */
 
     template <typename fd>
-    double distance(const std::vector <fd> &data1, std::vector <fd> &data2)
+    double distance(const std::vector <fd> &data1, const std::vector <fd> &data2)
     {
         if (data1.size() != data2.size())
         {
@@ -246,48 +246,6 @@ namespace kdspace
             return sqrt(sum);
         }
     }
-/*
-
-    template <typename fd>
-    void query_tree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset, std::ofstream *file)
-    {
-        std::shared_ptr <node <fd>> nn;
-        std::vector <fd> data;
-        if (dataset->size() == 0) return;
-        *file << "Query Data \t\t\t\t Sample Data \t\t\t Sample Data Index \t Euclidean Distance\n";
-
-        typename std::vector<std::vector<fd>>::iterator it;
-        for(it = dataset->begin(); it != dataset->end(); it++)
-        {
-            (*it).erase((*it).begin());
-            nn = tree.search_kdtree(*it);
-            typename std::vector<fd>::iterator itin;
-            *file<<"(";
-            itin = (*it).begin();
-            while (itin != (*it).end())
-            {
-                *file<<*itin;
-                itin++;
-                if (itin != (*it).end()) *file<<", ";
-            }
-            *file<<")\t";
-
-            data.clear();
-            data = nn->get_data();
-            *file <<"\t(";
-            itin = data.begin();
-            while (itin != data.end())
-            {
-                *file<<*itin;
-                itin++;
-                if (itin != data.end()) *file<<", ";
-            }
-            *file <<")\t";
-
-            *file<<nn->get_index()<<", "<<kdspace::distance(nn->get_data(), *it)<<'\n';
-        }
-    }
-*/
 }
 
 #endif

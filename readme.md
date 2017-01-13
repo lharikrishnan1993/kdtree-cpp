@@ -29,5 +29,5 @@ in the format of
 
 index_of_nearest_neighbor_in_input_file, euclidean_distance_between_the_nn_and_query_point
 
-For detailed documentation, please find the file src/html/annotated.html
+For detailed documentation, please find the file doc/html/index.html
 
