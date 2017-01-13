@@ -1,0 +1,158 @@
+\hypertarget{classnode}{\section{node$<$ fd $>$ Class Template Reference}
+\label{classnode}\index{node$<$ fd $>$@{node$<$ fd $>$}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classnode_a4856fc27552aa1360d252359853ee671}{node} (const std\-::vector$<$ fd $>$ \&data, bool level=0)
+\begin{DoxyCompactList}\small\item\em Parses the index from the data and updates both of them alonside the collision. If collision is high, the value is disregarded as duplicate and is ignored. \end{DoxyCompactList}\item 
+\hyperlink{classnode_a55699ad13ccb948e07d3f1e9a1e084e4}{$\sim$node} ()
+\begin{DoxyCompactList}\small\item\em Destructor. All are smart pointers and hence don't require to explicitely delete them. \end{DoxyCompactList}\item 
+fd \hyperlink{classnode_af47c45dd8ec3b72a8368ac541631f282}{get\-\_\-index} () const 
+\begin{DoxyCompactList}\small\item\em Returns the index so as to process it later. \end{DoxyCompactList}\item 
+std\-::vector$<$ fd $>$ \hyperlink{classnode_a358a1e8677402d724cf9f7c9c11c66e1}{get\-\_\-data} () const 
+\begin{DoxyCompactList}\small\item\em Returns the data so as to process it later. \end{DoxyCompactList}\item 
+void \hyperlink{classnode_a83d93d1cf6f7759302de4dc9a63bef4c}{check\-\_\-point} () const 
+\begin{DoxyCompactList}\small\item\em Prints the data and pointers for verification, display and debugging purposes. \end{DoxyCompactList}\item 
+void \hyperlink{classnode_a0ad70bac16602d7911a575ccaa6bc282}{print\-\_\-data} () const 
+\begin{DoxyCompactList}\small\item\em Prints the data and pointers for verification, display and debugging purposes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classnode_a01262b43303642d58dcf997f191757c8}{kdtree$<$ fd $>$}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classnode_a4856fc27552aa1360d252359853ee671}{\index{node@{node}!node@{node}}
+\index{node@{node}!node@{node}}
+\subsubsection[{node}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ {\bf node}$<$ fd $>$\-::{\bf node} (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data, }
+\item[{bool}]{level = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{classnode_a4856fc27552aa1360d252359853ee671}
+
+
+Parses the index from the data and updates both of them alonside the collision. If collision is high, the value is disregarded as duplicate and is ignored. 
+
+Constructor. Identifies the index from data and updates both of them. If collision is true, it is rejected as duplicate data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em Data} & and collision level \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Does not return anything. Just upadtes the values. 
+\end{DoxyReturn}
+\hypertarget{classnode_a55699ad13ccb948e07d3f1e9a1e084e4}{\index{node@{node}!$\sim$node@{$\sim$node}}
+\index{$\sim$node@{$\sim$node}!node@{node}}
+\subsubsection[{$\sim$node}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ {\bf node}$<$ fd $>$\-::$\sim${\bf node} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classnode_a55699ad13ccb948e07d3f1e9a1e084e4}
+
+
+Destructor. All are smart pointers and hence don't require to explicitely delete them. 
+
+Destructor. All are smart pointers or stack variables and hence will get destroyed automatically 
+
+\subsection{Member Function Documentation}
+\hypertarget{classnode_a83d93d1cf6f7759302de4dc9a63bef4c}{\index{node@{node}!check\-\_\-point@{check\-\_\-point}}
+\index{check\-\_\-point@{check\-\_\-point}!node@{node}}
+\subsubsection[{check\-\_\-point}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ void {\bf node}$<$ fd $>$\-::check\-\_\-point (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classnode_a83d93d1cf6f7759302de4dc9a63bef4c}
+
+
+Prints the data and pointers for verification, display and debugging purposes. 
+
+Prints data and the nodes values. Just to check if they are pointing to null or not.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\hypertarget{classnode_a358a1e8677402d724cf9f7c9c11c66e1}{\index{node@{node}!get\-\_\-data@{get\-\_\-data}}
+\index{get\-\_\-data@{get\-\_\-data}!node@{node}}
+\subsubsection[{get\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ std\-::vector$<$ fd $>$ {\bf node}$<$ fd $>$\-::get\-\_\-data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classnode_a358a1e8677402d724cf9f7c9c11c66e1}
+
+
+Returns the data so as to process it later. 
+
+Returns the data so as to process it later.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+data of the concerned node 
+\end{DoxyReturn}
+\hypertarget{classnode_af47c45dd8ec3b72a8368ac541631f282}{\index{node@{node}!get\-\_\-index@{get\-\_\-index}}
+\index{get\-\_\-index@{get\-\_\-index}!node@{node}}
+\subsubsection[{get\-\_\-index}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ fd {\bf node}$<$ fd $>$\-::get\-\_\-index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classnode_af47c45dd8ec3b72a8368ac541631f282}
+
+
+Returns the index so as to process it later. 
+
+Returns the index in the input file for the concerned node data
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+index of the concerned node in the sample input 
+\end{DoxyReturn}
+\hypertarget{classnode_a0ad70bac16602d7911a575ccaa6bc282}{\index{node@{node}!print\-\_\-data@{print\-\_\-data}}
+\index{print\-\_\-data@{print\-\_\-data}!node@{node}}
+\subsubsection[{print\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ void {\bf node}$<$ fd $>$\-::print\-\_\-data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{classnode_a0ad70bac16602d7911a575ccaa6bc282}
+
+
+Prints the data and pointers for verification, display and debugging purposes. 
+
+Prints the data alone. Basically, useful for debugging, checking purposes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classnode_a01262b43303642d58dcf997f191757c8}{\index{node@{node}!kdtree$<$ fd $>$@{kdtree$<$ fd $>$}}
+\index{kdtree$<$ fd $>$@{kdtree$<$ fd $>$}!node@{node}}
+\subsubsection[{kdtree$<$ fd $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ friend class {\bf kdtree}$<$ fd $>$\hspace{0.3cm}{\ttfamily [friend]}}}\label{classnode_a01262b43303642d58dcf997f191757c8}
+Class 'kdtree' is a friend of the class 'node', so as to access the private members. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{kdtree_8h}{kdtree.\-h}\item 
+\hyperlink{kdtree__utils_8cpp}{kdtree\-\_\-utils.\-cpp}\end{DoxyCompactItemize}

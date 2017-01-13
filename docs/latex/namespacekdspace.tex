@@ -1,0 +1,143 @@
+\hypertarget{namespacekdspace}{\section{kdspace Namespace Reference}
+\label{namespacekdspace}\index{kdspace@{kdspace}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classkdspace_1_1median__data}{median\-\_\-data}
+\begin{DoxyCompactList}\small\item\em Median\-\_\-\-Data\-: This class serves to be a holder of a bunch of data, namely, the point at which the data was split and the data to the left and the data to the right. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename fd $>$ }\\void \hyperlink{namespacekdspace_ae38cb61fa0fc73b8cced4a1bc0fb1d58}{parser} (std\-::vector$<$ std\-::vector$<$ fd $>$$>$ $\ast$whole\-\_\-data, std\-::ifstream $\ast$file)
+\begin{DoxyCompactList}\small\item\em Clears the containers, and later, using stringstream the data in the file is parsed and then pushed back into the vector. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\void \hyperlink{namespacekdspace_aed82e0d7ec733c0e3a0e354dd0026e4b}{grow\-\_\-kdtree} (\hyperlink{classkdtree}{kdtree}$<$ fd $>$ $\ast$tree, std\-::vector$<$ fd $>$ \&data)
+\begin{DoxyCompactList}\small\item\em This is an interface function and hence takes care of the necessary functionalities in order to use the 'insert\-\_\-tree' function. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\void \hyperlink{namespacekdspace_a83f456b7acaa6bb56f45158655aa1f83}{get\-\_\-split\-\_\-axis} (int $\ast$axis, const std\-::vector$<$ std\-::vector$<$ fd $>$$>$ $\ast$dataset, const size\-\_\-t val=0, const size\-\_\-t depth=0)
+\begin{DoxyCompactList}\small\item\em This decides the axis on which the data is to split. This value maintains the balance of the tree. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\void \hyperlink{namespacekdspace_a4f7e287c43237fb7400437c8ecf955f3}{get\-\_\-median} (std\-::shared\-\_\-ptr$<$ \hyperlink{classkdspace_1_1median__data}{median\-\_\-data}$<$ fd $>$ $>$ median\-\_\-details, std\-::vector$<$ std\-::vector$<$ fd $>$$>$ $\ast$dataset, const double val=0.\-5)
+\begin{DoxyCompactList}\small\item\em This chooses the split position given a dimension to split on from the 'get\-\_\-split\-\_\-axis' function. This too determines the balance of the tree. The value can range anywhere between 0 and 1 (both not included). If not will return exception. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename fd $>$ }\\double \hyperlink{namespacekdspace_a7273e612072ca0ae8689762a3c224da9}{distance} (const std\-::vector$<$ fd $>$ \&data1, const std\-::vector$<$ fd $>$ \&data2)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{namespacekdspace_a023c33dca0725913887ec75fe8f49373}{serialization\-\_\-flag} = false
+\item 
+bool \hyperlink{namespacekdspace_a78984ac844171865e7f2c0747f8f5862}{print\-\_\-flag} = false
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A namespace to hold some of the important functions pertaining to the functioning and interfacing to the classes to the required functions. 
+
+\subsection{Function Documentation}
+\hypertarget{namespacekdspace_a7273e612072ca0ae8689762a3c224da9}{\index{kdspace@{kdspace}!distance@{distance}}
+\index{distance@{distance}!kdspace@{kdspace}}
+\subsubsection[{distance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename fd $>$ double kdspace\-::distance (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data1, }
+\item[{const std\-::vector$<$ fd $>$ \&}]{data2}
+\end{DoxyParamCaption}
+)}}\label{namespacekdspace_a7273e612072ca0ae8689762a3c224da9}
+
+\begin{DoxyParams}{Parameters}
+{\em Two} & vector data points, within which the euclidean distance is to be identified. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the distance. 
+\end{DoxyReturn}
+\hypertarget{namespacekdspace_a4f7e287c43237fb7400437c8ecf955f3}{\index{kdspace@{kdspace}!get\-\_\-median@{get\-\_\-median}}
+\index{get\-\_\-median@{get\-\_\-median}!kdspace@{kdspace}}
+\subsubsection[{get\-\_\-median}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename fd $>$ void kdspace\-::get\-\_\-median (
+\begin{DoxyParamCaption}
+\item[{std\-::shared\-\_\-ptr$<$ median\-\_\-data$<$ fd $>$ $>$}]{median\-\_\-details, }
+\item[{std\-::vector$<$ std\-::vector$<$ fd $>$$>$ $\ast$}]{dataset, }
+\item[{const double}]{val = {\ttfamily 0.5}}
+\end{DoxyParamCaption}
+)}}\label{namespacekdspace_a4f7e287c43237fb7400437c8ecf955f3}
+
+
+This chooses the split position given a dimension to split on from the 'get\-\_\-split\-\_\-axis' function. This too determines the balance of the tree. The value can range anywhere between 0 and 1 (both not included). If not will return exception. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em The} & pointer to the class containerto hold the median details. The complete dataset to recursively, split it and the hyperparameter to choose and move the split position in the decided dimension. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The split data is inserted to the class object and it reflects in the called location. Hence, does not return anything. 
+\end{DoxyReturn}
+\hypertarget{namespacekdspace_a83f456b7acaa6bb56f45158655aa1f83}{\index{kdspace@{kdspace}!get\-\_\-split\-\_\-axis@{get\-\_\-split\-\_\-axis}}
+\index{get\-\_\-split\-\_\-axis@{get\-\_\-split\-\_\-axis}!kdspace@{kdspace}}
+\subsubsection[{get\-\_\-split\-\_\-axis}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename fd $>$ void kdspace\-::get\-\_\-split\-\_\-axis (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{axis, }
+\item[{const std\-::vector$<$ std\-::vector$<$ fd $>$$>$ $\ast$}]{dataset, }
+\item[{const size\-\_\-t}]{val = {\ttfamily 0}, }
+\item[{const size\-\_\-t}]{depth = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{namespacekdspace_a83f456b7acaa6bb56f45158655aa1f83}
+
+
+This decides the axis on which the data is to split. This value maintains the balance of the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & holder of type vector of vector which holds the complete data. Container to fill in the split axis, and values that determine which splitting strategy is to be used. By default, both the vaues, remain 0, that is, it figures out the dimension which has the greatest variance. Parameter 'val' can be changed to 1 to get the dimension with least variance leading to the worst heuristic possible. If it is neither 0 nor 1, code expects the depth value and will return it as same and this can be utilized to determine as=ny user defined strategy. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Values were filled into the concerned containers and hence does not return anything. 
+\end{DoxyReturn}
+\hypertarget{namespacekdspace_aed82e0d7ec733c0e3a0e354dd0026e4b}{\index{kdspace@{kdspace}!grow\-\_\-kdtree@{grow\-\_\-kdtree}}
+\index{grow\-\_\-kdtree@{grow\-\_\-kdtree}!kdspace@{kdspace}}
+\subsubsection[{grow\-\_\-kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename fd $>$ void kdspace\-::grow\-\_\-kdtree (
+\begin{DoxyParamCaption}
+\item[{{\bf kdtree}$<$ fd $>$ $\ast$}]{tree, }
+\item[{std\-::vector$<$ fd $>$ \&}]{data}
+\end{DoxyParamCaption}
+)}}\label{namespacekdspace_aed82e0d7ec733c0e3a0e354dd0026e4b}
+
+
+This is an interface function and hence takes care of the necessary functionalities in order to use the 'insert\-\_\-tree' function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em The} & tree into which the provided data is to be inserted. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None. Inserts the given given data into the tree. 
+\end{DoxyReturn}
+\hypertarget{namespacekdspace_ae38cb61fa0fc73b8cced4a1bc0fb1d58}{\index{kdspace@{kdspace}!parser@{parser}}
+\index{parser@{parser}!kdspace@{kdspace}}
+\subsubsection[{parser}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename fd $>$ void kdspace\-::parser (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ std\-::vector$<$ fd $>$$>$ $\ast$}]{whole\-\_\-data, }
+\item[{std\-::ifstream $\ast$}]{file}
+\end{DoxyParamCaption}
+)}}\label{namespacekdspace_ae38cb61fa0fc73b8cced4a1bc0fb1d58}
+
+
+Clears the containers, and later, using stringstream the data in the file is parsed and then pushed back into the vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & holder of type vector of vector into which the parsed data will be filled. A file which holds the data to be parsed. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Values were filled into the concerned containers a and hence does not return anything. 
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespacekdspace_a78984ac844171865e7f2c0747f8f5862}{\index{kdspace@{kdspace}!print\-\_\-flag@{print\-\_\-flag}}
+\index{print\-\_\-flag@{print\-\_\-flag}!kdspace@{kdspace}}
+\subsubsection[{print\-\_\-flag}]{\setlength{\rightskip}{0pt plus 5cm}bool kdspace\-::print\-\_\-flag = false}}\label{namespacekdspace_a78984ac844171865e7f2c0747f8f5862}
+Flag to avoid seg faults when repeatedly printed and to actovate calls from root with no parameters \hypertarget{namespacekdspace_a023c33dca0725913887ec75fe8f49373}{\index{kdspace@{kdspace}!serialization\-\_\-flag@{serialization\-\_\-flag}}
+\index{serialization\-\_\-flag@{serialization\-\_\-flag}!kdspace@{kdspace}}
+\subsubsection[{serialization\-\_\-flag}]{\setlength{\rightskip}{0pt plus 5cm}bool kdspace\-::serialization\-\_\-flag = false}}\label{namespacekdspace_a023c33dca0725913887ec75fe8f49373}
+Flag to avoid seg faults when repeatedly printed and to actovate calls from root with no parameters 

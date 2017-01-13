@@ -1,0 +1,281 @@
+\hypertarget{classkdtree}{\section{kdtree$<$ fd $>$ Class Template Reference}
+\label{classkdtree}\index{kdtree$<$ fd $>$@{kdtree$<$ fd $>$}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classkdtree_a938fa159f9e1088db61c8fc34b2d31c9}{kdtree} ()
+\begin{DoxyCompactList}\small\item\em Constructor for the kd tree. \end{DoxyCompactList}\item 
+\hyperlink{classkdtree_aed5e97fa78a51ce22c83874f5ccfc91a}{$\sim$kdtree} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the kd tree. \end{DoxyCompactList}\item 
+void \hyperlink{classkdtree_adb1d0dc87d051b2ee0372bc75d1c087f}{insert\-\_\-kdtree} (const std\-::vector$<$ fd $>$ \&data)
+\begin{DoxyCompactList}\small\item\em Creates the root, if it is null, else, passes it to the another insert function which performs the same function recursively. \end{DoxyCompactList}\item 
+std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$ $>$ \hyperlink{classkdtree_ab979a4b809ba9d5361a08c769719f202}{insert\-\_\-kdtree} (const std\-::vector$<$ fd $>$ \&data, std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$$>$ subtree, size\-\_\-t depth=0, bool collsion\-\_\-level=0) const 
+\begin{DoxyCompactList}\small\item\em the fundamental logic of insertion in kd tree and the explaination can be found at \href{https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf}{\tt https\-://web.\-stanford.\-edu/class/cs106l/handouts/assignment-\/3-\/kdtree.\-pdf} \end{DoxyCompactList}\item 
+double \hyperlink{classkdtree_a117e8a22122b787152cc1f657324b5ab}{distance} (const std\-::vector$<$ fd $>$ \&data1, const std\-::vector$<$ fd $>$ \&data2) const 
+\item 
+bool \hyperlink{classkdtree_ac53e48105197de24a35b77c3b57a2429}{check\-\_\-kdtree} (const std\-::vector$<$ fd $>$ \&data) const 
+\begin{DoxyCompactList}\small\item\em checks if the root is null (or if not tree exists) and returns itself if so. Else, sends the data to another function which performs the same recursively through layers. \end{DoxyCompactList}\item 
+bool \hyperlink{classkdtree_a5caf26ea3052ebcf8786236fd5fe564c}{check\-\_\-kdtree} (const std\-::vector$<$ fd $>$ \&data, std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$$>$ subtree, size\-\_\-t depth=0) const 
+\begin{DoxyCompactList}\small\item\em iteratively traverses the tree using preorder traversal technique and returns true if any node matches else returns false. \end{DoxyCompactList}\item 
+std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$ $>$ \hyperlink{classkdtree_a7d9f121b6ffed1340a989b30d84c87ef}{search\-\_\-kdtree} (const std\-::vector$<$ fd $>$ \&data) const 
+\begin{DoxyCompactList}\small\item\em checks if the root is null (or if not tree exists) and returns itself if so. Else, sends the data to another function which performs the same recursively through layers. \end{DoxyCompactList}\item 
+std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$ $>$ \hyperlink{classkdtree_a6dc8d374cf3e2a0d84760402c9535046}{search\-\_\-kdtree} (const std\-::vector$<$ fd $>$ \&data, std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$$>$ subtree, std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$$>$ nearest, size\-\_\-t depth=0, double best\-\_\-dist=std\-::numeric\-\_\-limits$<$ fd $>$\-::infinity()) const 
+\begin{DoxyCompactList}\small\item\em Iteratively runs through the tree to identify the nearest neighbor using pre order traversal, but this can only solve the problem if the nearest neighbor is on the same brach. Else, it is hard and a legitimate solution has been provided at \href{https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf}{\tt https\-://web.\-stanford.\-edu/class/cs106l/handouts/assignment-\/3-\/kdtree.\-pdf} and the code was inspired from this. \end{DoxyCompactList}\item 
+std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$ $>$ \hyperlink{classkdtree_ad8d3ab18d437f71c671857e67a221896}{serialize\-\_\-tree} (std\-::ofstream $\ast$file, std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$$>$ subtree=nullptr) const 
+\begin{DoxyCompactList}\small\item\em stores the data into a file called 'tree.\-kd' \end{DoxyCompactList}\item 
+void \hyperlink{classkdtree_a7c23d80e9c81081e95eea0d05cfe3cef}{deserialize\-\_\-tree} (std\-::ifstream $\ast$file)
+\begin{DoxyCompactList}\small\item\em parses the data in order from the file, thus saving a lot of time in creating the tree for usage. \end{DoxyCompactList}\item 
+void \hyperlink{classkdtree_a011c8684be587d74dd88ddf985b36223}{print\-\_\-tree} (std\-::shared\-\_\-ptr$<$ \hyperlink{classnode}{node}$<$ fd $>$$>$ subtree=nullptr) const 
+\begin{DoxyCompactList}\small\item\em Prints the node using check point so as to see all the data (or) tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classkdtree_a938fa159f9e1088db61c8fc34b2d31c9}{\index{kdtree@{kdtree}!kdtree@{kdtree}}
+\index{kdtree@{kdtree}!kdtree@{kdtree}}
+\subsubsection[{kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ {\bf kdtree}$<$ fd $>$\-::{\bf kdtree} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classkdtree_a938fa159f9e1088db61c8fc34b2d31c9}
+
+
+Constructor for the kd tree. 
+
+Constructor. Creates a tree.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\hypertarget{classkdtree_aed5e97fa78a51ce22c83874f5ccfc91a}{\index{kdtree@{kdtree}!$\sim$kdtree@{$\sim$kdtree}}
+\index{$\sim$kdtree@{$\sim$kdtree}!kdtree@{kdtree}}
+\subsubsection[{$\sim$kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ {\bf kdtree}$<$ fd $>$\-::$\sim${\bf kdtree} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classkdtree_aed5e97fa78a51ce22c83874f5ccfc91a}
+
+
+Destructor for the kd tree. 
+
+Destructor. All are smart pointers and hence will get destroyed automatically
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classkdtree_ac53e48105197de24a35b77c3b57a2429}{\index{kdtree@{kdtree}!check\-\_\-kdtree@{check\-\_\-kdtree}}
+\index{check\-\_\-kdtree@{check\-\_\-kdtree}!kdtree@{kdtree}}
+\subsubsection[{check\-\_\-kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ bool {\bf kdtree}$<$ fd $>$\-::check\-\_\-kdtree (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_ac53e48105197de24a35b77c3b57a2429}
+
+
+checks if the root is null (or if not tree exists) and returns itself if so. Else, sends the data to another function which performs the same recursively through layers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & to be checked for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean value. true if the data exists and false if not. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_a5caf26ea3052ebcf8786236fd5fe564c}{\index{kdtree@{kdtree}!check\-\_\-kdtree@{check\-\_\-kdtree}}
+\index{check\-\_\-kdtree@{check\-\_\-kdtree}!kdtree@{kdtree}}
+\subsubsection[{check\-\_\-kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ bool {\bf kdtree}$<$ fd $>$\-::check\-\_\-kdtree (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data, }
+\item[{std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$$>$}]{subtree, }
+\item[{size\-\_\-t}]{depth = {\ttfamily 0}}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_a5caf26ea3052ebcf8786236fd5fe564c}
+
+
+iteratively traverses the tree using preorder traversal technique and returns true if any node matches else returns false. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & to be checked for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a boolean value. true if the data exists and false if not. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_a7c23d80e9c81081e95eea0d05cfe3cef}{\index{kdtree@{kdtree}!deserialize\-\_\-tree@{deserialize\-\_\-tree}}
+\index{deserialize\-\_\-tree@{deserialize\-\_\-tree}!kdtree@{kdtree}}
+\subsubsection[{deserialize\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ void {\bf kdtree}$<$ fd $>$\-::deserialize\-\_\-tree (
+\begin{DoxyParamCaption}
+\item[{std\-::ifstream $\ast$}]{file}
+\end{DoxyParamCaption}
+)}}\label{classkdtree_a7c23d80e9c81081e95eea0d05cfe3cef}
+
+
+parses the data in order from the file, thus saving a lot of time in creating the tree for usage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & from which data is to be read and the required node of the tree(root by default). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None. It just deserializes the tree. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_a117e8a22122b787152cc1f657324b5ab}{\index{kdtree@{kdtree}!distance@{distance}}
+\index{distance@{distance}!kdtree@{kdtree}}
+\subsubsection[{distance}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ double {\bf kdtree}$<$ fd $>$\-::distance (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data1, }
+\item[{const std\-::vector$<$ fd $>$ \&}]{data2}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_a117e8a22122b787152cc1f657324b5ab}
+
+\begin{DoxyParams}{Parameters}
+{\em Two} & vector data points, within which the euclidean distance is to be identified. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the distance. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_adb1d0dc87d051b2ee0372bc75d1c087f}{\index{kdtree@{kdtree}!insert\-\_\-kdtree@{insert\-\_\-kdtree}}
+\index{insert\-\_\-kdtree@{insert\-\_\-kdtree}!kdtree@{kdtree}}
+\subsubsection[{insert\-\_\-kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ void {\bf kdtree}$<$ fd $>$\-::insert\-\_\-kdtree (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data}
+\end{DoxyParamCaption}
+)}}\label{classkdtree_adb1d0dc87d051b2ee0372bc75d1c087f}
+
+
+Creates the root, if it is null, else, passes it to the another insert function which performs the same function recursively. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & to be inserted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None. Just the value is inserted to the tree. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_ab979a4b809ba9d5361a08c769719f202}{\index{kdtree@{kdtree}!insert\-\_\-kdtree@{insert\-\_\-kdtree}}
+\index{insert\-\_\-kdtree@{insert\-\_\-kdtree}!kdtree@{kdtree}}
+\subsubsection[{insert\-\_\-kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$ $>$ {\bf kdtree}$<$ fd $>$\-::insert\-\_\-kdtree (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data, }
+\item[{std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$$>$}]{subtree, }
+\item[{size\-\_\-t}]{depth = {\ttfamily 0}, }
+\item[{bool}]{collision = {\ttfamily 0}}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_ab979a4b809ba9d5361a08c769719f202}
+
+
+the fundamental logic of insertion in kd tree and the explaination can be found at \href{https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf}{\tt https\-://web.\-stanford.\-edu/class/cs106l/handouts/assignment-\/3-\/kdtree.\-pdf} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & to be inserted, layer at which it is to be inserted, the subtree and collision value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None. Just the value is inserted to the tree. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_a011c8684be587d74dd88ddf985b36223}{\index{kdtree@{kdtree}!print\-\_\-tree@{print\-\_\-tree}}
+\index{print\-\_\-tree@{print\-\_\-tree}!kdtree@{kdtree}}
+\subsubsection[{print\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ void {\bf kdtree}$<$ fd $>$\-::print\-\_\-tree (
+\begin{DoxyParamCaption}
+\item[{std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$$>$}]{subtree = {\ttfamily nullptr}}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_a011c8684be587d74dd88ddf985b36223}
+
+
+Prints the node using check point so as to see all the data (or) tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em The} & required node of the tree(root by default). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\hypertarget{classkdtree_a7d9f121b6ffed1340a989b30d84c87ef}{\index{kdtree@{kdtree}!search\-\_\-kdtree@{search\-\_\-kdtree}}
+\index{search\-\_\-kdtree@{search\-\_\-kdtree}!kdtree@{kdtree}}
+\subsubsection[{search\-\_\-kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$ $>$ {\bf kdtree}$<$ fd $>$\-::search\-\_\-kdtree (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_a7d9f121b6ffed1340a989b30d84c87ef}
+
+
+checks if the root is null (or if not tree exists) and returns itself if so. Else, sends the data to another function which performs the same recursively through layers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & to which the nearest neighbor is to be identified. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the pointer to the node which is the nearest neighbor thr given data. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_a6dc8d374cf3e2a0d84760402c9535046}{\index{kdtree@{kdtree}!search\-\_\-kdtree@{search\-\_\-kdtree}}
+\index{search\-\_\-kdtree@{search\-\_\-kdtree}!kdtree@{kdtree}}
+\subsubsection[{search\-\_\-kdtree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$ $>$ {\bf kdtree}$<$ fd $>$\-::search\-\_\-kdtree (
+\begin{DoxyParamCaption}
+\item[{const std\-::vector$<$ fd $>$ \&}]{data, }
+\item[{std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$$>$}]{subtree, }
+\item[{std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$$>$}]{nearest, }
+\item[{size\-\_\-t}]{depth = {\ttfamily 0}, }
+\item[{double}]{best\-\_\-dist = {\ttfamily std\-:\-:numeric\-\_\-limits$<$fd$>$\-:\-:infinity()}}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_a6dc8d374cf3e2a0d84760402c9535046}
+
+
+Iteratively runs through the tree to identify the nearest neighbor using pre order traversal, but this can only solve the problem if the nearest neighbor is on the same brach. Else, it is hard and a legitimate solution has been provided at \href{https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf}{\tt https\-://web.\-stanford.\-edu/class/cs106l/handouts/assignment-\/3-\/kdtree.\-pdf} and the code was inspired from this. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & to which the nearest neighbor is to be identified. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the pointer to the node which is the nearest neighbor thr given data. 
+\end{DoxyReturn}
+\hypertarget{classkdtree_ad8d3ab18d437f71c671857e67a221896}{\index{kdtree@{kdtree}!serialize\-\_\-tree@{serialize\-\_\-tree}}
+\index{serialize\-\_\-tree@{serialize\-\_\-tree}!kdtree@{kdtree}}
+\subsubsection[{serialize\-\_\-tree}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class fd $>$ std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$ $>$ {\bf kdtree}$<$ fd $>$\-::serialize\-\_\-tree (
+\begin{DoxyParamCaption}
+\item[{std\-::ofstream $\ast$}]{file, }
+\item[{std\-::shared\-\_\-ptr$<$ {\bf node}$<$ fd $>$$>$}]{subtree = {\ttfamily nullptr}}
+\end{DoxyParamCaption}
+) const}}\label{classkdtree_ad8d3ab18d437f71c671857e67a221896}
+
+
+stores the data into a file called 'tree.\-kd' 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & to which data is to be written and the required node of the tree(root by default). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the subtree if it reaches the end of the file. If null, will return the subtree as it is. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{kdtree_8h}{kdtree.\-h}\item 
+\hyperlink{kdtree__utils_8cpp}{kdtree\-\_\-utils.\-cpp}\end{DoxyCompactItemize}
