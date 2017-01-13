@@ -17,11 +17,11 @@ using namespace kdspace;
 *   @brief The build_kdtree function as asked in the question paper.
 */
 template <typename fd>
-std::shared_ptr <node <fd>> build_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
+void build_kdtree(kdtree <fd> &tree, std::vector<std::vector<fd>> *dataset)
 {
     std::shared_ptr <node <fd>> build_tree_root;
 
-    if (dataset->size() == 0) return build_tree_root;
+    if (dataset->size() == 0) return;
 
     std::shared_ptr <median_data <fd> > details = std::make_shared <median_data <fd>> ();
     try
@@ -32,10 +32,10 @@ std::shared_ptr <node <fd>> build_kdtree(kdtree <fd> &tree, std::vector<std::vec
     {
         std::cout<<e.what()<<std::endl;
     }
-    build_tree_root = grow_kdtree(&tree, details->data);
+    grow_kdtree(&tree, details->data);
     build_kdtree(tree, &details->data_left);
     build_kdtree(tree, &details->data_right);
-    return build_tree_root;
+    return;
 }
 /**
 *   @param The file into which the nearest neighbors distance and the index in the sample input is to be stored, and the data to be queried.
@@ -66,12 +66,11 @@ int main(int argc, char *argv[])
         std::vector <double> data;
         std::vector<std::vector<double>> whole_data;
         std::vector<std::vector<double>> query_data;
+        data.clear();
         whole_data.clear();
         query_data.clear();
         kdtree <double> tree;
-        std::shared_ptr <node <double>> root;
         kdtree <double> tree2;
-        std::shared_ptr <node <double>> root2;
 
         /**
         Parsing from file to extract the data to be inserted in the Kd-tree.
@@ -98,8 +97,7 @@ int main(int argc, char *argv[])
             Building the Kd-tree using the parsed data.
         */
             std::cout<<"Building the Kd tree..."<<std::endl;
-            root = build_kdtree(tree, &whole_data);
-
+            build_kdtree(tree, &whole_data);
 
         /**
             Storing the devoloped tree (serialization) into a file named tree.kd
@@ -112,7 +110,7 @@ int main(int argc, char *argv[])
             else
             {
                 std::cout<<"Stroring the tree to disk as 'tree.kd'."<<std::endl;
-                tree.serialize_tree(root, &fp);
+                tree.serialize_tree(&fp);
             }
             fp << '/';
             fp.close();
@@ -134,7 +132,7 @@ int main(int argc, char *argv[])
             else
             {
                 std::cout<<"Loading the tree from the serialized file 'tree.kd'."<<std::endl;
-                root2 = tree2.deserialize_tree(&file_des);
+                tree2.deserialize_tree(&file_des);
             }
         }
         catch (const std::runtime_error& e)
@@ -207,7 +205,6 @@ int main(int argc, char *argv[])
             whole_data.clear();
             query_data.clear();
             kdtree <double> tree;
-            std::shared_ptr <node <double>> root;
 
             std::string file_folder = "../src/";
             if (std::string(argv[i]) == "-b")
@@ -217,14 +214,23 @@ int main(int argc, char *argv[])
                 */
                 try
                 {
-                    std::ifstream file;
-                    file.open(file_folder+=argv[i+1]);
-                    if (!file) throw std::runtime_error("Could not open file");
+                    if (std::string(argv[i+1])[std::string(argv[i+1]).length()-1] == 'v' && std::string(argv[i+1])[std::string(argv[i+1]).length()-2] == 's'\
+                    && std::string(argv[i+1])[std::string(argv[i+1]).length()-3] == 'c')
+                    {
+                        std::ifstream file;
+                        file.open(file_folder+=argv[i+1]);
+                        if (!file) throw std::runtime_error("Could not open file");
+                        else
+                        {
+                            std::cout<<"Parsing the given file..."<<std::endl;
+                            parser <double> (&whole_data, &file);
+                            file.close();
+                        }
+                    }
                     else
                     {
-                        std::cout<<"Parsing the given file..."<<std::endl;
-                        parser <double> (&whole_data, &file);
-                        file.close();
+                        std::cout<<"Please provide a .csv file."<<std::endl;
+                        return 0;
                     }
                 }
                 catch (const std::runtime_error& e)
@@ -237,7 +243,7 @@ int main(int argc, char *argv[])
                     Building the Kd-tree using the parsed data.
                 */
                 std::cout<<"Building the Kd tree..."<<std::endl;
-                root = build_kdtree(tree, &whole_data);
+                build_kdtree(tree, &whole_data);
 
                 try
                 {
@@ -290,13 +296,21 @@ int main(int argc, char *argv[])
             {
                 try
                 {
-                    std::ifstream file_des;
-                    file_des.open(file_folder+=argv[i+1], std::ios::binary);
-                    if (!file_des) throw std::runtime_error("Could not open file");
+                    if (std::string(argv[i+1])[std::string(argv[i+1]).length()-1] == 'd' && std::string(argv[i+1])[std::string(argv[i+1]).length()-2] == 'k')
+                    {
+                        std::ifstream file_des;
+                        file_des.open(file_folder+=argv[i+1], std::ios::binary);
+                        if (!file_des) throw std::runtime_error("Could not open file");
+                        else
+                        {
+                            std::cout<<"Loading the tree from the given serialized file."<<std::endl;
+                            tree.deserialize_tree(&file_des);
+                        }
+                    }
                     else
                     {
-                        std::cout<<"Loading the tree from the given serialized file."<<std::endl;
-                        root = tree.deserialize_tree(&file_des);
+                        std::cout<<"Please provide a .kd file."<<std::endl;
+                        return 0;
                     }
                 }
                     catch (const std::runtime_error& e)

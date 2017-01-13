@@ -54,7 +54,7 @@ class kdtree
         kdtree();                           /*!< Constructor. Creates a tree. */
         ~kdtree();                          /*!< Destructor. All are smart pointers and hence will get destroyed automatically */
 
-        std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data);
+        void insert_kdtree(std::vector <fd> &data);
         std::shared_ptr <node <fd>> insert_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, size_t depth=0, bool collsion_level=0);
 
         double distance(std::vector <fd> &data1, std::vector <fd> &data2) const;
@@ -65,10 +65,10 @@ class kdtree
         std::shared_ptr <node <fd>> search_kdtree(std::vector <fd> &data) const;
         std::shared_ptr <node <fd>> search_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd>> subtree, std::shared_ptr <node <fd>> nearest, size_t depth=0, double best_dist=std::numeric_limits<fd>::infinity()) const;
 
-        std::shared_ptr <node <fd>> serialize_tree(std::shared_ptr <node <fd>> subtree, std::ofstream *file) const;
-        std::shared_ptr <node <fd>> deserialize_tree(std::ifstream *file);
+        std::shared_ptr <node <fd>> serialize_tree(std::ofstream *file, std::shared_ptr <node <fd>> subtree=nullptr) const;
+        void deserialize_tree(std::ifstream *file);
 
-        void print_tree(std::shared_ptr <node <fd>> subtree) const;
+        void print_tree(std::shared_ptr <node <fd>> subtree=nullptr) const;
 };
 /**
 * A namespace to hold some of the important functions pertaining to the functioning and interfacing to the classes
@@ -76,6 +76,8 @@ class kdtree
 */
 namespace kdspace
 {
+    bool serialization_flag = false;     /*!< Flag to avoid seg faults when repeatedly printed and to actovate calls from root with no parameters*/
+    bool print_flag = false;            /*!< Flag to avoid seg faults when repeatedly printed and to actovate calls from root with no parameters*/
 /**
 *   @param A holder of type vector of vector into which the parsed data will be filled. A file which holds the data to be parsed.
 *   @return Values were filled into the concerned containersa and hence does not return anything.
@@ -116,34 +118,22 @@ namespace kdspace
 
 /**
 *   @param The tree into which the provided data is to be inserted.
-*   @return The root or head of the tree is returned so that, the root of the tree can always be accessed from anywhere in the main function.
+*   @return None. Inserts the given given data into the tree.
 *   @brief This is an interface function and hence takes care of the necessary functionalities in order to use the 'insert_tree' function.
 */
 
     template <typename fd>
-    std::shared_ptr <node <fd> > grow_kdtree(kdtree <fd> *tree, std::vector <fd> &data)
+    void grow_kdtree(kdtree <fd> *tree, std::vector <fd> &data)
     {
-        std::shared_ptr <node <fd>> head;
-        static bool root_locater = 0;
-        if (!root_locater)
+        try
         {
-            head = tree->insert_kdtree(data);
+            tree->insert_kdtree(data);
             data.clear();
         }
-        else
+        catch (const std::invalid_argument& e )
         {
-            try
-            {
-                tree->insert_kdtree(data);
-                data.clear();
-            }
-            catch (const std::invalid_argument& e )
-            {
-                std::cout<<"Ignoring due to duplication..."<<std::endl;
-            }
+            std::cout<<"Ignoring due to duplication..."<<std::endl;
         }
-        root_locater += 1;
-        return head;
     }
 
 /**

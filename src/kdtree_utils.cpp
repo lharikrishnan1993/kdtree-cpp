@@ -108,26 +108,26 @@ template <class fd>
 kdtree <fd>::~kdtree() {}
 /**
 *   @param data to be inserted
-*   @return pointer to the root of the tree so that, it can manipulate wherever required.
+*   @return None. Just the value is inserted to the tree.
 *   @brief Creates the root, if it is null, else, passes it to the another insert function
 *       which performs the same function recursively.
 */
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::insert_kdtree(std::vector <fd> &data)
+void kdtree <fd>::insert_kdtree(std::vector <fd> &data)
 {
     if (root.get() == nullptr)
     {
         this->root = std::make_shared<node <fd>> (data);
-        return root;
     }
     else
     {
-        return insert_kdtree(data, root);
+        insert_kdtree(data, root);
+        return;
     }
 }
 /**
 *   @param data to be inserted, layer at which it is to be inserted, the subtree and collision value
-*   @return pointer to the root of the tree so that, it can manipulate wherever required.
+*   @return None. Just the value is inserted to the tree.
 *   @brief the fundamental logic of insertion in kd tree and the explaination can be found at
 *       https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf
 */
@@ -225,13 +225,16 @@ bool kdtree <fd>::check_kdtree(std::vector <fd> &data, std::shared_ptr <node <fd
 template <class fd>
 std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data) const
 {
-    if (root.get() == nullptr) return root;
-    else return search_kdtree(data, root, root);
+    if (this->root.get() == nullptr) return this->root;
+    else
+    {
+        return search_kdtree(data, this->root, this->root);
+    }
 }
 /**
 *   @param data to which the nearest neighbor is to be identified.
 *   @return returns the pointer to the node which is the nearest neighbor thr given data.
-*   @brief Iterativelyruns through the tree to identify the nearest neighbor using pre order traversal,
+*   @brief Iteratively runs through the tree to identify the nearest neighbor using pre order traversal,
 *       but this can only solve the problem if the nearest neighbor is on the same brach. Else, it is hard and a
 *       legitimate solution has been provided at https://web.stanford.edu/class/cs106l/handouts/assignment-3-kdtree.pdf
 *       and the code was inspired from this.
@@ -241,6 +244,7 @@ std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, s
 {
     if (subtree.get() == nullptr) return nearest;
     double temp_dist = distance(data, subtree->data_point);
+
     if (temp_dist < best_dist)
     {
         nearest = subtree;
@@ -274,13 +278,19 @@ std::shared_ptr <node <fd>> kdtree <fd>::search_kdtree(std::vector <fd> &data, s
 *   @brief stores the data into a file called 'tree.kd'
  */
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <fd>> subtree, std::ofstream *file) const
+std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::ofstream *file, std::shared_ptr <node <fd>> subtree) const
 {
     if (subtree.get() == nullptr)
     {
+        if (kdspace::serialization_flag == false)
+        {
+            serialize_tree(file, this->root);
+            kdspace::serialization_flag = false;
+        }
         return subtree;
     }
 
+    kdspace::serialization_flag = true;
     typename std::vector<fd>::iterator it;
     *file << subtree->index << ',';
     for (it=subtree->data_point.begin(); it != subtree->data_point.end();)
@@ -290,17 +300,17 @@ std::shared_ptr <node <fd>> kdtree <fd>::serialize_tree(std::shared_ptr <node <f
         if (it != subtree->data_point.end()) *file << ',';
     }
     *file << "\n";
-    serialize_tree(subtree->left, file);
-    serialize_tree(subtree->right, file);
+    serialize_tree(file, subtree->left);
+    serialize_tree(file, subtree->right);
     return subtree;
 }
 /**
 *   @param file from which data is to be read and the required node of the tree(root by default).
-*   @return returns the subtree if it reaches the end of the file. If null, will return the subtree as it is.
+*   @return None. It just deserializes the tree.
 *   @brief parses the data in order from the file, thus saving a lot of time in creating the tree for usage.
  */
 template <class fd>
-std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::ifstream *file)
+void kdtree <fd>::deserialize_tree(std::ifstream *file)
 {
     std::vector<fd> data;
     std::string value, word, whole_data;
@@ -324,11 +334,11 @@ std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::ifstream *file)
                 ss >> num;
                 data.push_back(num);
             }
-            if (!root_locater) head = this->insert_kdtree(data);
+            if (!root_locater) this->insert_kdtree(data);
             else this->insert_kdtree(data);
         }
     }
-    return head;
+    return;
 }
 /**
 *   @param The required node of the tree(root by default).
@@ -338,10 +348,21 @@ std::shared_ptr <node <fd>> kdtree <fd>::deserialize_tree(std::ifstream *file)
 template <class fd>
 void kdtree <fd>::print_tree(std::shared_ptr <node <fd>> subtree) const
 {
-    if (subtree.get() != nullptr)
+    if (subtree.get() == nullptr)
     {
+        if (kdspace::print_flag == false)
+        {
+            print_tree(this->root);
+            kdspace::print_flag = false;
+            return void();
+        }
+    }
+    else
+    {
+        kdspace::print_flag = true;
         subtree->check_point();
         print_tree(subtree->left);
         print_tree(subtree->right);
     }
+//    kdspace::print_flag = false;
 }
